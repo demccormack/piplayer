@@ -11,6 +11,7 @@ function getFilms() {
                 ihtml += newline;
             }
             document.getElementById("cb").innerHTML = ihtml;
+            selectFilm();
         }
     };
     xhttp.open("GET", "api", true);
