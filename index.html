@@ -1,9 +1,11 @@
 <html>
     <head>
+        <title>Pi Player</title>
+        <link rel="stylesheet" href="stylesheet.css">
+        <script type="text/javascript" src="piplayer.js"></script>
     </head>
     <body>
-        <video controls="controls" width="800" height="600" 
-            src="media/Films/Ghandi (1982) [1080p]/Ghandi.1982.1080p.BluRay.x264.YIFY.mp4">
-        </video>
+        <select id="cb" onchange="selectFilm()"></select>
+        <div id="player"></div>
     </body>
 </html>
