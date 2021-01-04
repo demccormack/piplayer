@@ -3,12 +3,11 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     background-color: black;
     text-align: center;
+    margin: 20px;
 }
 
-#player, html {
-    padding-top: 20px;
-}
-
-#video {
+#player {
     border: 2px solid rgb(194, 194, 194);
+    width: 800px;
+    margin: auto;
 }

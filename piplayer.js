@@ -20,6 +20,6 @@ function getFilms() {
 
 function selectFilm() {
     var filmUrl = document.getElementById("cb").value;
-    var ihtml = "<video id='video' controls='controls' width='800' height='450' src='" + filmUrl + "'></video>";
+    var ihtml = "<video controls='controls' width='800' height='450' src='" + filmUrl + "'></video>";
     document.getElementById("player").innerHTML = ihtml;
 }
