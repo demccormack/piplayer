@@ -23,3 +23,10 @@ function selectFilm() {
     var ihtml = "<video controls='controls' width='800' height='450' src='" + filmUrl + "'></video>";
     document.getElementById("player").innerHTML = ihtml;
 }
+
+
+var app = angular.module("ppApp", []); 
+app.controller("ppCtrl", function($scope) {
+    $scope.firstName = "John";
+    $scope.lastName = "Doe";
+  });

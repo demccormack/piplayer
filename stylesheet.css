@@ -1,13 +1,20 @@
-#cb, #player, html {
+html {
     color: rgb(194, 194, 194);
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     background-color: black;
     text-align: center;
-    margin: 20px;
 }
 
 #player {
     border: 2px solid rgb(194, 194, 194);
     width: 800px;
     margin: auto;
+}
+
+#nav {
+    border: 2px solid rgb(194, 194, 194);
+    width: 200px;
+    height:100%;
+    float: left;
+    text-align: left;
 }

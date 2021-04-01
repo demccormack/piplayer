@@ -2,11 +2,15 @@
     <head>
         <title>Pi Player</title>
         <link rel="stylesheet" href="stylesheet.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
         <script type="text/javascript" src="piplayer.js"></script>
     </head>
-    <body>
+    <body ng-app="ppApp" ng-controller="ppCtrl">
         <h1>Pi Player</h1>
         <select id="cb" onchange="selectFilm()"></select>
+        <div id="nav">
+            {{ firstName + " " + lastName }}
+        </div>
         <div id="player"></div>
     </body>
 </html>
