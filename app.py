@@ -19,7 +19,7 @@ def filmTree(root):
         else:
             dot = item.split('.')
             if dot[-1] in ['mp4', 'mov', 'flv', 'wmv', 'avi', 'm4v']:
-                result.append({'name': item, 'content': fullPath[14:len(fullPath)]})
+                result.append({'name': item, 'url': fullPath[14:len(fullPath)]})
     return result
 
 
