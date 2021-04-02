@@ -1,4 +1,4 @@
-import os
+import os, urllib.parse
 from flask import Flask, request, abort, jsonify
 
 app = Flask(__name__)
@@ -19,7 +19,8 @@ def filmTree(root):
         else:
             dot = item.split('.')
             if dot[-1] in ['mp4', 'mov', 'flv', 'wmv', 'avi', 'm4v', 'mp3', 'm4a']:
-                result.append({'name': item, 'url': fullPath[14:len(fullPath)]})
+                url = urllib.parse.quote(fullPath[14:len(fullPath)])
+                result.append({'name': item, 'url': url})
     return result
 
 
