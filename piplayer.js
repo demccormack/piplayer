@@ -26,7 +26,9 @@ function selectFilm() {
 
 
 var app = angular.module("ppApp", []); 
-app.controller("ppCtrl", function($scope) {
-    $scope.firstName = "John";
-    $scope.lastName = "Doe";
+app.controller("ppCtrl", function($scope, $http) {
+    $http.get("api")
+    .then(function(response) {
+        $scope.films = response.data;
+      });
   });
