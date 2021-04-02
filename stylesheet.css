@@ -13,7 +13,7 @@ html {
 
 #nav {
     border-right: 2px solid rgb(194, 194, 194);
-    width: 20%;
+    width: 27%;
     height:100%;
     position: fixed;
     top: 0;
@@ -35,7 +35,7 @@ html {
 }
 
 #main {
-    width: 80%;
+    width: 73%;
     height:100%;
     position: fixed;
     top: 0;
