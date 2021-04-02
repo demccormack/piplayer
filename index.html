@@ -2,23 +2,11 @@
     <head>
         <title>Pi Player</title>
         <link rel="stylesheet" href="stylesheet.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
         <script type="text/javascript" src="piplayer.js"></script>
     </head>
-    <body ng-app="ppApp" ng-controller="ppCtrl" ng-init="sth=false">
-        <div id="nav">
-            <div ng-repeat="i in films">
-                <input type="radio" id={{i.name}} name="level1" ng-model="sth">
-                <label for={{i.name}}>{{i.name}}</label><br>
-                <div class="sublist" ng-repeat="j in i.content">
-                    <input type="radio" id={{j.name}} name={{i.name}} value={{j.url}}>
-                    <label for={{j.name}}>{{j.name}}</label><br>
-                    <p>Value: {{sth}}</p>
-                </div>
-            </div>
-        </div>
+    <body>
+        <div id="nav"></div>
         <h1>Pi Player</h1>
-        <select id="cb" onchange="selectFilm()"></select>
         <div id="player"></div>
     </body>
 </html>

@@ -5,12 +5,7 @@ function getFilms() {
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             films = JSON.parse(this.responseText);
-            var ihtml = "";
-            for (var film of films) {
-                var newline = "<option value='" + film["url"] + "'>" + film["name"] + "</option>\n";
-                ihtml += newline;
-            }
-            document.getElementById("cb").innerHTML = ihtml;
+            document.getElementById("nav").innerHTML = tree(films);
             selectFilm();
         }
     };
@@ -18,17 +13,30 @@ function getFilms() {
     xhttp.send();
 }
 
+function tree(obj) {
+    var ihtml = "";
+    for (var item of obj) {
+        var newlines = "";
+        if (typeof item.url == "undefined") {
+            newlines += "<div>\n";
+            newlines += "<input type='checkbox' id='" + item.name + "' value='" + item.url + "'></input>\n";
+            newlines += "<label for='" + item.name + "'>" + item.name + "</label>\n";
+            newlines += "<div class='sublist'>\n";
+            newlines += tree(item.content);
+            newlines += "</div>\n";
+            newlines += "</div>\n";
+        }
+        else {
+            newlines += "<input type='radio' onchange='selectFilm()' id='" + item.name + "' name='file' value='" + item.url + "'></input>\n";
+            newlines += "<label for='" + item.name + "'>" + item.name + "</label>\n";
+        }
+        ihtml += newlines;
+    }
+    return ihtml;
+}
+
 function selectFilm() {
-    var filmUrl = document.getElementById("cb").value;
+    filmUrl = document.querySelector('input[name="file"]:checked').value;
     var ihtml = "<video controls='controls' width='800' height='450' src='" + filmUrl + "'></video>";
     document.getElementById("player").innerHTML = ihtml;
 }
-
-
-var app = angular.module("ppApp", []); 
-app.controller("ppCtrl", function($scope, $http) {
-    $http.get("api")
-    .then(function(response) {
-        $scope.films = response.data;
-      });
-  });
