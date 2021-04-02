@@ -10,7 +10,7 @@ def get_films():
     return jsonify(filmTree(filmdir))
 
 def filmTree(root):
-    ls = os.listdir(root)
+    ls = sorted(os.listdir(root))
     result = []
     for item in ls:
         fullPath = os.path.join(root, item)
