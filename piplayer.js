@@ -21,13 +21,13 @@ function tree(obj) {
         if (typeof item.url == "undefined") {
             newlines += "<input type='checkbox' onchange='setVisibility(this)' id='" 
                 + item.name + "' value='" + item.url + "'></input>\n";
-            newlines += "<label for='" + item.name + "'>" + item.name + "</label>\n";
+            newlines += "<label class='dirLabel' for='" + item.name + "'>" + item.name + "</label>\n";
             newlines += tree(item.content);
         }
         else {
             newlines += "<input type='radio' onchange='selectFilm()' id='" 
                 + item.name + "' name='file' value='" + item.url + "'></input>\n";
-            newlines += "<label for='" + item.name + "'>" + item.name + "</label>\n";
+            newlines += "<label class='fileLabel' for='" + item.name + "'>" + item.name + "</label>\n";
         }
         newlines += "</div>\n";
         ihtml += newlines;

@@ -25,6 +25,10 @@ html {
     white-space: nowrap;
 }
 
+.dirLabel {
+    color: rgb(66, 66, 66);
+}
+
 .navItem .navItem{
     margin-left: 2ch;
     display: none;
