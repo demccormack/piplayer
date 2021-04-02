@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/api', methods=['GET'])
 def get_films():
-    filmdir = '/var/www/html/media/Films'
+    filmdir = '/var/www/html/media'
     return jsonify(filmTree(filmdir))
 
 def filmTree(root):
@@ -18,7 +18,7 @@ def filmTree(root):
             result.append({'name': item, 'content': filmTree(fullPath)})
         else:
             dot = item.split('.')
-            if dot[-1] in ['mp4', 'mov', 'flv', 'wmv', 'avi', 'm4v']:
+            if dot[-1] in ['mp4', 'mov', 'flv', 'wmv', 'avi', 'm4v', 'mp3', 'm4a']:
                 result.append({'name': item, 'url': fullPath[14:len(fullPath)]})
     return result
 
