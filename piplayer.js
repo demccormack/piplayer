@@ -6,7 +6,7 @@ function getFilms() {
         if (this.readyState == 4 && this.status == 200) {
             films = JSON.parse(this.responseText);
             document.getElementById("nav").innerHTML = tree(films);
-            selectFilm();
+            document.getElementById("river.mp4").click();
         }
     };
     xhttp.open("GET", "api", true);
@@ -17,22 +17,35 @@ function tree(obj) {
     var ihtml = "";
     for (var item of obj) {
         var newlines = "";
+        newlines += "<div class='navItem'>\n";
         if (typeof item.url == "undefined") {
-            newlines += "<div>\n";
-            newlines += "<input type='checkbox' id='" + item.name + "' value='" + item.url + "'></input>\n";
+            newlines += "<input type='checkbox' onchange='setVisibility(this)' id='" 
+                + item.name + "' value='" + item.url + "'></input>\n";
             newlines += "<label for='" + item.name + "'>" + item.name + "</label>\n";
-            newlines += "<div class='sublist'>\n";
             newlines += tree(item.content);
-            newlines += "</div>\n";
-            newlines += "</div>\n";
         }
         else {
-            newlines += "<input type='radio' onchange='selectFilm()' id='" + item.name + "' name='file' value='" + item.url + "'></input>\n";
+            newlines += "<input type='radio' onchange='selectFilm()' id='" 
+                + item.name + "' name='file' value='" + item.url + "'></input>\n";
             newlines += "<label for='" + item.name + "'>" + item.name + "</label>\n";
         }
+        newlines += "</div>\n";
         ihtml += newlines;
     }
     return ihtml;
+}
+
+function setVisibility(cb) {
+    var children = cb.parentElement.children;
+    Array.from(children).forEach(div => {
+        if (div.nodeName == "DIV") {
+            if (cb.checked) {
+                div.style.display = "block";
+            } else {
+                div.style.display = "none";
+            }
+        }
+    });
 }
 
 function selectFilm() {

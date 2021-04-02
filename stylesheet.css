@@ -25,6 +25,15 @@ html {
     white-space: nowrap;
 }
 
-.sublist {
+.navItem .navItem{
     margin-left: 2ch;
+    display: none;
+}
+
+#main {
+    width: 80%;
+    height:100%;
+    position: fixed;
+    top: 0;
+    right: 0;
 }
