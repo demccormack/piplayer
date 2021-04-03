@@ -50,7 +50,6 @@ function setVisibility(cb) {
 
 function selectFilm() {
     filmUrl = document.querySelector('input[name="file"]:checked').value;
-    var ihtml = "<video id='video' controls='controls' width='800' height='450' src='" + filmUrl + "'></video>";
+    var ihtml = "<video id='video' controls='controls' width='800' height='450' src='" + filmUrl + "' autoplay></video>";
     document.getElementById("player").innerHTML = ihtml;
-    document.getElementById("video").play();
 }
