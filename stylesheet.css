@@ -26,7 +26,12 @@ html {
 }
 
 .dirLabel {
-    color: rgb(66, 66, 66);
+    color: rgb(72, 90, 255);
+}
+
+.fileLabel {
+    color:rgb(52, 143, 52);
+    font-weight: bold;
 }
 
 .navItem .navItem{
