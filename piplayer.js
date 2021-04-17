@@ -1,15 +1,33 @@
-document.onload = getFilms();
+document.onload = start();
 
-function getFilms() {
+function start() {
+    obj = getFilms("", "nav");
+    // document.getElementById("river.mp4").click();
+}
+
+function setVisibility(cb) {
+    if (cb.checked) {
+        getFilms(cb.id, cb.id);
+    } else {
+        var children = cb.parentElement.children;
+        Array.from(children).forEach(div => {
+            if (div.nodeName == "DIV") {
+                div.style.display = "none";
+            }
+        });
+    }
+}
+
+function getFilms(dir, id) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            films = JSON.parse(this.responseText);
-            document.getElementById("nav").innerHTML = tree(films);
-            document.getElementById("river.mp4").click();
+            var obj =  JSON.parse(this.responseText);
+            document.getElementById(id).innerHTML = tree(obj);
         }
     };
-    xhttp.open("GET", "api", true);
+    var req = dir.slice(6);
+    xhttp.open("GET", "api?dir=" + req, true);
     xhttp.send();
 }
 
@@ -18,34 +36,20 @@ function tree(obj) {
     for (var item of obj) {
         var newlines = "";
         newlines += "<div class='navItem'>\n";
-        if (typeof item.url == "undefined") {
+        if (item.type == "directory") {
             newlines += "<input type='checkbox' onchange='setVisibility(this)' id='" 
-                + item.name + "' value='" + item.url + "'></input>\n";
-            newlines += "<label class='dirLabel' for='" + item.name + "'>" + item.name + "</label>\n";
-            newlines += tree(item.content);
+                + item.url + "' value='" + item.url + "'></input>\n";
+            newlines += "<label class='dirLabel' for='" + item.url + "'>" + item.name + "</label>\n";
         }
         else {
             newlines += "<input type='radio' onchange='selectFilm()' id='" 
-                + item.name + "' name='file' value='" + item.url + "'></input>\n";
-            newlines += "<label class='fileLabel' for='" + item.name + "'>" + item.name + "</label>\n";
+                + item.url + "' name='file' value='" + item.url + "'></input>\n";
+            newlines += "<label class='fileLabel' for='" + item.url + "'>" + item.name + "</label>\n";
         }
         newlines += "</div>\n";
         ihtml += newlines;
     }
     return ihtml;
-}
-
-function setVisibility(cb) {
-    var children = cb.parentElement.children;
-    Array.from(children).forEach(div => {
-        if (div.nodeName == "DIV") {
-            if (cb.checked) {
-                div.style.display = "block";
-            } else {
-                div.style.display = "none";
-            }
-        }
-    });
 }
 
 function selectFilm() {
