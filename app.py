@@ -17,11 +17,11 @@ def filmTree(root):
         fullPath = os.path.join(root, item)
         url = urllib.parse.quote(fullPath[14:len(fullPath)])
         if os.path.isdir(fullPath):
-            result.append({'name': item, 'content': url})
+            result.append({'name': item, 'type': 'directory', 'url': url})
         else:
             dot = item.split('.')
             if dot[-1] in ['mp4', 'mov', 'flv', 'wmv', 'avi', 'm4v', 'mp3', 'm4a']:
-                result.append({'name': item, 'url': url})
+                result.append({'name': item, 'type': 'file', 'url': url})
     return result
 
 
