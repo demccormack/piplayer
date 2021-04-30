@@ -23,12 +23,26 @@ function getFilms(dir, id) {
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             var obj =  JSON.parse(this.responseText);
-            document.getElementById(id).innerHTML = tree(obj);
+            if (id == "nav") {
+                document.getElementById(id).innerHTML = tree(obj);
+            } else {
+                document.getElementById(id).parentElement.innerHTML = checkBox(id) + tree(obj);
+            }
         }
     };
     var req = dir.slice(6);
     xhttp.open("GET", "api?dir=" + req, true);
     xhttp.send();
+}
+
+function checkBox(id) {
+    var newlines = "<input type='checkbox' onchange='setVisibility(this)' id='" 
+        + id + "' value='" + id + "'></input>\n";
+    var split = id.toString().split("/");
+    var name = split[split.length - 1];
+    newlines += "<label class='dirLabel' for='" + id + "'>" + name + "</label>\n";
+    newlines += "<div class='child'></div>";
+    return newlines;
 }
 
 function tree(obj) {
@@ -37,11 +51,8 @@ function tree(obj) {
         var newlines = "";
         newlines += "<div class='navItem'>\n";
         if (item.type == "directory") {
-            newlines += "<input type='checkbox' onchange='setVisibility(this)' id='" 
-                + item.url + "' value='" + item.url + "'></input>\n";
-            newlines += "<label class='dirLabel' for='" + item.url + "'>" + item.name + "</label>\n";
-        }
-        else {
+            newlines += checkBox(item.url);
+        } else {
             newlines += "<input type='radio' onchange='selectFilm()' id='" 
                 + item.url + "' name='file' value='" + item.url + "'></input>\n";
             newlines += "<label class='fileLabel' for='" + item.url + "'>" + item.name + "</label>\n";
