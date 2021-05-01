@@ -1,10 +1,13 @@
 window.onload = function() {
+    play("media/Films/river.mp4");
     getMedia("nav");
 };
 
 function cbClick(cb) {
     if (cb.checked) {
-        getMedia(cb.id);
+        if (document.getElementById(cb.id).parentElement.lastChild.innerHTML == "") {
+            getMedia(cb.id);
+        }
         document.getElementById(cb.id).parentElement.lastChild.style.display = "block";
     } else {
         document.getElementById(cb.id).parentElement.lastChild.style.display = "none";
@@ -18,7 +21,6 @@ function getMedia(dir) {
             var obj =  JSON.parse(this.responseText);
             if (dir == "nav") {
                 document.getElementById(dir).innerHTML = tree(obj);
-                play("media/Films/river.mp4");
             } else {
                 document.getElementById(dir).parentElement.lastChild.innerHTML = tree(obj);
             }
