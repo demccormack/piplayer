@@ -1,70 +1,67 @@
-document.onload = start();
+window.onload = function() {
+    getMedia("nav");
+};
 
-function start() {
-    obj = getFilms("", "nav");
-    // document.getElementById("river.mp4").click();
-}
-
-function setVisibility(cb) {
+function cbClick(cb) {
     if (cb.checked) {
-        getFilms(cb.id, cb.id);
+        getMedia(cb.id);
+        document.getElementById(cb.id).parentElement.lastChild.style.display = "block";
     } else {
-        var children = cb.parentElement.children;
-        Array.from(children).forEach(div => {
-            if (div.nodeName == "DIV") {
-                div.style.display = "none";
-            }
-        });
+        document.getElementById(cb.id).parentElement.lastChild.style.display = "none";
     }
 }
 
-function getFilms(dir, id) {
+function getMedia(dir) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             var obj =  JSON.parse(this.responseText);
-            if (id == "nav") {
-                document.getElementById(id).innerHTML = tree(obj);
+            if (dir == "nav") {
+                document.getElementById(dir).innerHTML = tree(obj);
+                play("media/Films/river.mp4");
             } else {
-                document.getElementById(id).parentElement.innerHTML = checkBox(id) + tree(obj);
+                document.getElementById(dir).parentElement.lastChild.innerHTML = tree(obj);
             }
         }
     };
-    var req = dir.slice(6);
+    var req = "";
+    if (dir != "nav") {
+        req = dir.slice(6);
+    }
     xhttp.open("GET", "api?dir=" + req, true);
     xhttp.send();
-}
-
-function checkBox(id) {
-    var newlines = "<input type='checkbox' onchange='setVisibility(this)' id='" 
-        + id + "' value='" + id + "'></input>\n";
-    var split = id.toString().split("/");
-    var name = split[split.length - 1];
-    newlines += "<label class='dirLabel' for='" + id + "'>" + name + "</label>\n";
-    newlines += "<div class='child'></div>";
-    return newlines;
 }
 
 function tree(obj) {
     var ihtml = "";
     for (var item of obj) {
-        var newlines = "";
-        newlines += "<div class='navItem'>\n";
+        var id = item.url;
+        var name = item.name;
+
+        newlines = "<div class='navItem'>\n";
         if (item.type == "directory") {
-            newlines += checkBox(item.url);
+            newlines += "<input type='checkbox' onchange='cbClick(this)' id='" 
+                + id + "' value='" + id + "'></input>\n";
+            newlines += "<label class='dirLabel' for='" + id + "'>" + name + "</label>\n";
+            newlines += "<div></div>";
         } else {
-            newlines += "<input type='radio' onchange='selectFilm()' id='" 
-                + item.url + "' name='file' value='" + item.url + "'></input>\n";
-            newlines += "<label class='fileLabel' for='" + item.url + "'>" + item.name + "</label>\n";
+            newlines += "<input type='radio' onchange='selectMedia()' id='" 
+                + id + "' name='file' value='" + id + "'></input>\n";
+            newlines += "<label class='fileLabel' for='" + id + "'>" + name + "</label>\n";
         }
         newlines += "</div>\n";
+
         ihtml += newlines;
     }
     return ihtml;
 }
 
-function selectFilm() {
-    filmUrl = document.querySelector('input[name="file"]:checked').value;
-    var ihtml = "<video id='video' controls='controls' width='800' height='450' src='" + filmUrl + "' autoplay></video>";
+function selectMedia() {
+    url = document.querySelector('input[name="file"]:checked').value;
+    play(url);
+}
+
+function play(url) {
+    var ihtml = "<video id='video' controls='controls' width='800' height='450' src='" + url + "' autoplay></video>";
     document.getElementById("player").innerHTML = ihtml;
 }
