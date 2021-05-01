@@ -20,16 +20,13 @@ function getMedia(dir) {
         if (this.readyState == 4 && this.status == 200) {
             var obj =  JSON.parse(this.responseText);
             if (dir == "nav") {
-                document.getElementById(dir).innerHTML = tree(obj);
+                document.getElementById("nav").innerHTML = tree(obj);
             } else {
                 document.getElementById(dir).parentElement.lastChild.innerHTML = tree(obj);
             }
         }
     };
-    var req = "";
-    if (dir != "nav") {
-        req = dir.slice(6);
-    }
+    req = dir.slice(6);
     xhttp.open("GET", "api?dir=" + req, true);
     xhttp.send();
 }
