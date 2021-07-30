@@ -61,6 +61,6 @@ function selectMedia() {
 }
 
 function play(url) {
-    var ihtml = "<video id='video' controls='controls' width='800' height='450' src='" + url + "' autoplay></video>";
+    var ihtml = "<video id='video' controls='controls' src='" + url + "' autoplay></video>";
     document.getElementById("player").innerHTML = ihtml;
 }

@@ -7,8 +7,11 @@ html {
 
 #player {
     border: 2px solid rgb(194, 194, 194);
-    width: 800px;
+    width: 60%;
     margin: auto;
+}
+#video {
+    width: 100%;
 }
 
 #nav {
@@ -16,6 +19,7 @@ html {
     width: 27%;
     height:100%;
     position: fixed;
+    resize: horizontal;
     top: 0;
     left: 0;
     text-align: left;
