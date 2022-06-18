@@ -1,5 +1,7 @@
-import os, urllib.parse
-from flask import Flask, request, abort, jsonify
+import os
+import sys
+import urllib.parse
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
@@ -24,4 +26,16 @@ def filmTree(root):
 
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=8080, debug=True)
+    cli_args = sys.argv[1:]
+
+    # If the IP and port are supplied as arguments, use them.
+    if cli_args:
+        host = cli_args[0]
+        if len(cli_args) > 1:
+            port = cli_args[1]
+        else:
+            port = 8080
+    else:
+        host = "127.0.0.1"
+
+    app.run(host=host, port=port, debug=True)
