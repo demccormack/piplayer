@@ -1,0 +1,44 @@
+# Docker composition file. Use `docker-compose up -d` to start the services.
+
+# Warning: If this file is placed in a subdirectory, the volume mappings break.
+
+version: "3.9"
+
+services:
+  piplayer.frontend:
+    container_name: frontend
+    image: piplayer.frontend:latest
+    restart: always
+    ports:
+      - "8000:80"
+    volumes:
+       # Note: ':ro' suffix makes it read-only.
+       - "${MEDIA:-/var/www/html/media}:/app/media:ro"
+       - "./frontend:/app:ro"
+    networks:
+      - piplayer-network
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - ALL
+
+  piplayer.backend:
+    container_name: backend
+    image: piplayer.backend:latest
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+       # Note: ':ro' suffix makes it read-only.
+       - "${MEDIA:-/var/www/html/media}:/var/www/html/media:ro"
+       - "./backend:/app:ro"
+    networks:
+      - piplayer-network
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - ALL
+
+networks:
+  piplayer-network:
+    driver: bridge

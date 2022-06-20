@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 
-@app.route('/api', methods=['GET'])
+@app.route('/', methods=['GET'])
 def get_films():
     dir = request.args.get('dir')
     filmdir = '/var/www/html/media/' + dir
