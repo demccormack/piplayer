@@ -1,2 +1,4 @@
 .vscode
 formats.csv
+*venv
+__pycache__
