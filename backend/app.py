@@ -2,8 +2,12 @@ import os
 import sys
 import urllib.parse
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+# Enable CORS for development server only
+CORS(app, origins=["http://localhost:3000", "https://127.0.0.1:3000"])
 
 
 @app.route('/', methods=['GET'])
