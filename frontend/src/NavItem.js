@@ -40,16 +40,16 @@ function NavItem(props) {
   const mapItem = (item) => {
     if (item.type === "directory") {
       return (
-        <div>
-          <input type='checkbox' onChange={() => handleCbCheckedChange(item.url)} key={item.url} id={item.url} value={item.url}></input>
+        <div key={item.url}>
+          <input type='checkbox' onChange={() => handleCbCheckedChange(item.url)} id={item.url} value={item.url}></input>
           <label className='dirLabel' htmlFor={item.url}>{item.name}</label>
           <NavItem url={item.url} />
         </div>
       )
     } else {
       return (
-        <div>
-          <input type='radio' key={item.url} id={item.url} value={item.url}></input>
+        <div key={item.url}>
+          <input type='radio' id={item.url} value={item.url}></input>
           <label className='fileLabel' name='file' htmlFor={item.url}>{item.name}</label>
         </div>
       );
