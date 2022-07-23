@@ -6,7 +6,7 @@ function App() {
   return (
     <div>
       <div id="Nav">
-        <NavItem url="" />
+        <NavItem url="" initExpand={true} />
       </div>
       <div id="main">
         <h1>Pi Player</h1>
