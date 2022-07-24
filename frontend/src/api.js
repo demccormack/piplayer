@@ -5,6 +5,6 @@ export function fetchApi(url, callback) {
     .then(response => response.json())
     .then(items => {
       // Update the state with the list of items.
-      callback(items);
+      callback(oldItems => items);
     });
   }

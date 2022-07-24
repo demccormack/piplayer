@@ -1,12 +1,12 @@
 import './App.css';
-import NavItem from './NavItem.js';
+import Dir from './NavItem.js';
 import Player from './Player.js';
 
 function App() {
   return (
     <div>
       <div id="Nav">
-        <NavItem url="" initExpand={true} />
+        <Dir url="" initExpand={true} />
       </div>
       <div id="main">
         <h1>Pi Player</h1>
