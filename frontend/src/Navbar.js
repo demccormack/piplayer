@@ -19,12 +19,10 @@ function Navbar(props) {
   }
 
   const handleCbCheckedChange = (url) => {
-    console.log("Checked: " + url);
     setItems(oldItems => {
       const result = oldItems.map((item) => {
         if (item.url === url) {
-          item.expand = !item.expand;
-          console.log("Expand: " + item.expand);
+          item.expand = document.getElementById(url).checked;
         }
         return item;
       });
@@ -51,8 +49,11 @@ function Navbar(props) {
 function Dir(props) {
   return (
     <div className='navItem'>
-      <input type='checkbox' onChange={() => props.onChange(props.item.url)} />
+      <input type='checkbox'  id={props.item.url} onChange={() => props.onChange(props.item.url)} />
       <label className='dirLabel'>{props.item.name + props.item.expand}</label>
+      {props.item.expand && props.item.children.map(child => (
+        <Dir key={child.url} item={child} onChange={props.onChange} />
+      ))}
     </div>
   )
 }
