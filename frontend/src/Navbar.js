@@ -81,7 +81,7 @@ function Navbar(props) {
   return (
     <div id="Nav">
       {items.map(item => (
-        <Dir key={item.url} item={item} onChange={handleCbCheckedChange} />
+        <Node key={item.url} item={item} onChange={handleCbCheckedChange} />
       ))}
     </div>
   )
@@ -90,15 +90,24 @@ function Navbar(props) {
 
 
 
-function Dir(props) {
+function Node(props) {
   const {name, type, url, expand, children} = props.item;
   return (
     <div className='navItem'>
-      <input type='checkbox'  id={url} onChange={() => props.onChange(url)} />
-      <label className='dirLabel'>{name}</label>
-      {expand && children.map(child => (
-        <Dir key={child.url} item={child} onChange={props.onChange} />
-      ))}
+      {type === 'directory' ? (
+        <>
+          <input type='checkbox' checked={expand} id={url} onChange={() => props.onChange(url)} />
+          <label className='dirLabel'>{name}</label>
+          {expand && children.map(child => (
+            <Node key={child.url} item={child} onChange={props.onChange} />
+          ))}
+        </>
+      ) : (
+        <>
+          <input type='radio' name='file' id={url} />
+          <label className='fileLabel' htmlFor={url}>{name}</label>
+        </>
+      )}
     </div>
   )
 }
