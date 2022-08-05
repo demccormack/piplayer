@@ -10,11 +10,11 @@ services:
     image: piplayer.frontend:latest
     restart: always
     ports:
-      - "8000:80"
+      - "3000:3000"
     volumes:
        # Note: ':ro' suffix makes it read-only.
        - "${MEDIA:-/var/www/html/media}:/app/media:ro"
-       - "./frontend:/app:ro"
+       - "./frontend/src:/app/src:ro"
     networks:
       - piplayer-network
     security_opt:

@@ -16,7 +16,7 @@ USER nopriv
 
 # Copy the Python files into the container.
 # Note: Working directory should be root of repo.
-COPY backend/* .
+COPY backend/* ./
 
 # Install dependencies.
 RUN python3 -m pip install -r requirements.txt
