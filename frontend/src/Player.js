@@ -1,11 +1,9 @@
 import './App.css';
-import { useState } from "react";
 
-function Player() {
-  const [url, setUrl] = useState("https://professionalsoaring.com/tools/webcam/cam1.jpg");
+function Player(props) {
   return (
     <div id="Player">
-      <img id="video" src={url} alt=""></img>
+      <video id="video" controls="controls" src={props.url} autoPlay />
     </div>
   );
 }
