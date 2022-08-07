@@ -3,12 +3,14 @@ import Navbar from './Navbar.js';
 import Player from './Player.js';
 import { useState } from "react";
 
+const MEDIA_ROOT = "http://127.0.0.1:8002/"
+
 function App() {
   const [playUrl, setPlayUrl] = useState("https://professionalsoaring.com/tools/webcam/cam1.jpg");
 
   const handleRadioButtonChange = () => {
     let url = document.querySelector('input[name="file"]:checked').value;
-    setPlayUrl(url);
+    setPlayUrl(`${MEDIA_ROOT}${url}`);
   }
 
   return (

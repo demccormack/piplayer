@@ -9,19 +9,20 @@ app = Flask(__name__)
 # Enable CORS for development server only
 CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000"])
 
+mediaRoot = "/var/www/html/media/"
 
 @app.route('/', methods=['GET'])
 def get_films():
     dir = request.args.get('dir')
-    filmdir = '/var/www/html/media/' + dir
-    return jsonify(filmTree(filmdir))
+    dirPath = os.path.join(mediaRoot, dir)
+    return jsonify(filmTree(dirPath))
 
-def filmTree(root):
-    ls = sorted(os.listdir(root))
+def filmTree(dir):
+    ls = sorted(os.listdir(dir))
     result = []
     for item in ls:
-        fullPath = os.path.join(root, item)
-        url = urllib.parse.quote(fullPath[14:len(fullPath)])
+        fullPath = os.path.join(dir, item)
+        url = urllib.parse.quote(fullPath[len(mediaRoot):])
         if os.path.isdir(fullPath):
             result.append({'name': item, 'type': 'directory', 'url': url})
         else:

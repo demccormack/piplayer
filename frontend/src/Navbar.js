@@ -14,11 +14,10 @@ function Navbar(props) {
   const getItemFromItems = (items, url) => {
     let obj = [...items];
     let dirs = url.split('/');
-    for ( // Skip the first part of the URL as it is not a directory
-      let i = 1; i < dirs.length; i++) {
+    for (let i = 0; i < dirs.length; i++) {
         /* This workaround is needed because the root of the state object has a different structure to 
           the objects under it. To fix this properly, change the state object so the root also has children. */
-        if (i === 1) {
+        if (i === 0) {
           obj = obj.find(item => item.url.split('/')[i] === dirs[i]);
         } else {
           obj = obj.children.find(item => item.url.split('/')[i] === dirs[i]);
