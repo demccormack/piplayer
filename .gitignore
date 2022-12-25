@@ -2,3 +2,6 @@
 formats.csv
 *venv
 __pycache__
+
+# MacOS Finder
+.DS_Store
