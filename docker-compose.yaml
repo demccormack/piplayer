@@ -31,7 +31,7 @@ services:
     volumes:
        # Note: ':ro' suffix makes it read-only.
        - "${MEDIA:-/var/www/html/media}:/var/www/html/media:ro"
-       - "./backend:/app:ro"
+       - "./backend/src:/app/src:ro"
     networks:
       - piplayer-network
     security_opt:
