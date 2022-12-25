@@ -10,7 +10,9 @@ fi
 
 docker build -t piplayer.backend -f ./docker/backend/Dockerfile . &
 docker build -t piplayer.frontend -f ./docker/frontend/Dockerfile . &
+docker build -t piplayer.media -f ./docker/media/Dockerfile . &
 
 wait
 
-docker-compose up -d
+docker-compose up
+
