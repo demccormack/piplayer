@@ -3,14 +3,12 @@ import Navbar from './Navbar.js';
 import Player from './Player.js';
 import { useState } from "react";
 
-const MEDIA_ROOT = "http://127.0.0.1:8080/"
-
 function App() {
-  const [playUrl, setPlayUrl] = useState(`${MEDIA_ROOT}welcome`);
+  const [playUrl, setPlayUrl] = useState("welcome");
 
   const handleRadioButtonChange = () => {
-    let url = document.querySelector('input[name="file"]:checked').value;
-    setPlayUrl(`${MEDIA_ROOT}${url}`);
+    const url = document.querySelector('input[name="file"]:checked').value;
+    setPlayUrl(url);
   }
 
   return (
