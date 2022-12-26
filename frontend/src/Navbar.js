@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
+import fetchApi from './api';
 import './App.css';
-import {fetchApi} from './api.js';
 
 function Navbar(props) {
   const [items, setItems] = useState([]);
