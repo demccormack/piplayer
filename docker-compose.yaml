@@ -41,7 +41,7 @@ services:
   
   piplayer.media:
     container_name: media
-    image: nginx:stable
+    image: piplayer.media:latest
     restart: always
     ports:
       - 8002:80
