@@ -37,9 +37,9 @@ services:
     cap_drop:
       - ALL
   
-  piplayer.media:
-    container_name: media
-    image: piplayer.media:latest
+  piplayer.proxy:
+    container_name: proxy
+    image: piplayer.proxy:latest
     restart: always
     ports:
       - 8080:80

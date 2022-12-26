@@ -5,6 +5,6 @@ RUN touch /var/run/nginx.pid && chown nginx:nginx /var/run/nginx.pid
 
 USER nginx
 
-COPY docker/media/nginx.conf /etc/nginx/nginx.conf
+COPY docker/proxy/nginx.conf /etc/nginx/nginx.conf
 
 CMD ["nginx", "-g", "daemon off;"]

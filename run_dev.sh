@@ -10,7 +10,7 @@ fi
 
 docker build -t piplayer.backend -f ./docker/backend/Dockerfile . &
 docker build -t piplayer.frontend -f ./docker/frontend/Dockerfile . &
-docker build -t piplayer.media -f ./docker/media/Dockerfile . &
+docker build -t piplayer.proxy -f ./docker/proxy/Dockerfile . &
 
 wait
 
