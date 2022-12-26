@@ -1,4 +1,4 @@
-const API_ROOT = "http://127.0.0.1:8002/?dir=";
+const API_ROOT = "http://127.0.0.1:8080/?dir=";
 
 /**
  * Fetches a directory listing from the API and calls the callback function with the result.

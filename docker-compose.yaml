@@ -42,7 +42,7 @@ services:
     image: piplayer.media:latest
     restart: always
     ports:
-      - 8002:80
+      - 8080:80
     volumes:
       - "${MEDIA:-/var/www/html/media}:/usr/share/nginx/html:ro"
     networks:
