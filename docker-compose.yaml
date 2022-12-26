@@ -47,6 +47,10 @@ services:
       - "${MEDIA:-/var/www/html/media}:/usr/share/nginx/html:ro"
     networks:
       - piplayer-network
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - ALL
 
 
 networks:
