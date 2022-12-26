@@ -10,11 +10,7 @@ services:
     image: piplayer.frontend:latest
     restart: always
     ports:
-      - "3000:3000"
-    volumes:
-       # Note: ':ro' suffix makes it read-only.
-       - "${MEDIA:-/var/www/html/media}:/app/media:ro"
-       - "./frontend/src:/app/src:ro"
+      - "3000:80"
     networks:
       - piplayer-network
     security_opt:
@@ -27,9 +23,7 @@ services:
     image: piplayer.backend:latest
     restart: always
     volumes:
-       # Note: ':ro' suffix makes it read-only.
        - "${MEDIA:-/var/www/html/media}:/var/www/html/media:ro"
-       - "./backend/src:/app/src:ro"
     networks:
       - piplayer-network
     security_opt:
