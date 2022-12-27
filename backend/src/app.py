@@ -6,8 +6,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
-# Enable CORS for development server only
-CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000"])
+CORS(app, origins=os.environ['CORS_ORIGINS'].split())
 
 mediaRoot = "/var/www/html/media/"
 

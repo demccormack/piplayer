@@ -1,11 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-export MEDIA="${1:-}"
-if [[ -z "$MEDIA" ]]
+if ! [[ "${1:-}" ]]
 then
-    echo "Usage: $0 /path/to/media/dir"
-    echo "As you have not defined the media directory, it will default to /var/www/html/media"
+    echo "Usage: $0 /path/to/env/file"
+    false
 fi
 
 docker build -t piplayer.backend -f ./docker/backend/Dockerfile . &
@@ -14,5 +13,4 @@ docker build -t piplayer.proxy -f ./docker/proxy/Dockerfile . &
 
 wait
 
-docker-compose up
-
+docker-compose --env-file="$1" up
