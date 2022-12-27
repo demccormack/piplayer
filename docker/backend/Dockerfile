@@ -22,6 +22,7 @@ COPY backend/* ./
 
 RUN python3 -m pip install -r requirements.txt
 
+RUN mkdir -pv /app/bin
 RUN [[ -f /app/bin/gunicorn ]] || ln -snv /home/nopriv/.local/bin/gunicorn /app/bin/gunicorn
 
 CMD python3 -u /app/bin/gunicorn -w 2 -b 0.0.0.0:8080 app:app
