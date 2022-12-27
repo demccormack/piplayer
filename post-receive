@@ -13,16 +13,11 @@ if ! [ -t 0 ]
 then
   read -a ref
 fi
-IFS='/' read -ra REF <<< "${ref[2]}"
-BRANCH="${REF[2]}"
-echo "$BRANCH"
 
-if [[ deploy/production == "$BRANCH" ]] && [[ "$(hostname)" == bier ]]
+if [[ "${ref[2]}" == "refs/heads/deploy/production" ]] && [[ "$(hostname)" == "bier" ]]
 then
   GIT_WORK_TREE="$WORKDIR" git checkout -f deploy/production
   pushd "$WORKDIR"
-  docker-compose --env-file production.env down
-  delcontainers
-  delimages
-  ./run.sh production.env
+  ! [[ "$(sudo docker ps | grep piplayer)" ]] || sudo docker-compose --env-file production.env down
+  sudo bash ./run.sh production.env
 fi
