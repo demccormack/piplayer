@@ -20,6 +20,8 @@ USER nopriv
 # Note: Working directory should be root of repo.
 COPY backend/* ./
 
-RUN python3 -m pip install -r requirements.txt -t .
+RUN python3 -m pip install -r requirements.txt
+
+RUN [[ -f /app/bin/gunicorn ]] || ln -snv /home/nopriv/.local/bin/gunicorn /app/bin/gunicorn
 
 CMD python3 -u /app/bin/gunicorn -w 2 -b 0.0.0.0:8080 app:app
