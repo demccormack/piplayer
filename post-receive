@@ -1,0 +1,28 @@
+#!/bin/bash
+set -euxo pipefail
+
+# To use this script as a hook for continuous deployment, create a
+# symlink by running the following command from the repository root:
+# ln -snvf $(pwd)/post-receive .git/hooks/post-receive
+
+WORKDIR=~/piplayer
+
+# From https://gist.github.com/deanrather/3697539
+echo "Determining branch"
+if ! [ -t 0 ]
+then
+  read -a ref
+fi
+IFS='/' read -ra REF <<< "${ref[2]}"
+BRANCH="${REF[2]}"
+echo "$BRANCH"
+
+if [[ deploy/production == "$BRANCH" ]] && [[ "$(hostname)" == bier ]]
+then
+  GIT_WORK_TREE="$WORKDIR" git checkout -f deploy/production
+  pushd "$WORKDIR"
+  docker-compose --env-file production.env down
+  delcontainers
+  delimages
+  ./run.sh production.env
+fi
