@@ -6,6 +6,7 @@ set -euxo pipefail
 # ln -snvf $(pwd)/post-receive .git/hooks/post-receive
 
 WORKDIR=~/piplayer
+ENV=.env.production
 
 # From https://gist.github.com/deanrather/3697539
 echo "Determining branch"
@@ -18,6 +19,6 @@ if [[ "${ref[2]}" == "refs/heads/deploy/production" ]] && [[ "$(hostname)" == "b
 then
   GIT_WORK_TREE="$WORKDIR" git checkout -f deploy/production
   pushd "$WORKDIR"
-  ! [[ "$(sudo docker ps | grep piplayer)" ]] || sudo docker-compose --env-file production.env down
-  sudo bash ./run.sh production.env
+  ! [[ "$(sudo docker ps | grep piplayer)" ]] || sudo docker-compose --env-file $ENV down
+  sudo bash ./run.sh $ENV
 fi

@@ -13,6 +13,6 @@ docker build -t piplayer.proxy -f ./docker/proxy/Dockerfile . &
 
 wait
 
-[[ "$1" == "local.env" ]] || DETACHED='-d'
+[[ "$1" == .env.development ]] || DETACHED='-d'
 
 docker-compose --env-file="$1" up ${DETACHED:-}
