@@ -1,12 +1,12 @@
-const API_ROOT = "http://127.0.0.1:8080/?dir=";
+const API_ROOT = process.env.REACT_APP_API_ROOT;
 
 /**
  * Fetches a directory listing from the API and calls the callback function with the result.
- * @param {String} url The url of the directory to fetch.
+ * @param {String} dir The path of the directory to fetch.
  * @param {Function} callback The callback function to call with the result.
 */
-const fetchApi = (url, callback) => fetch(`${API_ROOT}${url}`)
+const fetchApi = (dir, callback) => fetch(`${API_ROOT}?dir=${dir}`)
   .then((response) => response.json())
-  .then((items) => callback(items, url));
+  .then((items) => callback(items, dir));
 
 export default fetchApi;

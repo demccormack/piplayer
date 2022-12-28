@@ -1,6 +1,6 @@
 import './App.css';
 
-const MEDIA_ROOT = "http://127.0.0.1:8080/"
+const MEDIA_ROOT = process.env.REACT_APP_MEDIA_ROOT;
 
 function Player(props) {
   return (
