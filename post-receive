@@ -14,10 +14,12 @@ if ! [ -t 0 ]
 then
   read -a ref
 fi
+BRANCH=$(sed 's,refs/heads/,,' <<< "${ref[2]}")
 
-if [[ "${ref[2]}" == "refs/heads/deploy/production" ]] && [[ "$(hostname)" == "bier" ]]
+GIT_WORK_TREE="$WORKDIR" git checkout -f "$BRANCH"
+
+if [[ "$BRANCH" == "deploy/production" ]] && [[ "$(hostname)" == "bier" ]]
 then
-  GIT_WORK_TREE="$WORKDIR" git checkout -f deploy/production
   pushd "$WORKDIR"
   ! [[ "$(sudo docker ps | grep piplayer)" ]] || sudo docker-compose --env-file $ENV down
   CONTAINERS=$(sudo docker ps -aq)
