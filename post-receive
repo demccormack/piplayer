@@ -2,8 +2,7 @@
 set -euxo pipefail
 
 # To use this script as a hook for continuous deployment, create a
-# symlink by running the following command from the repository root:
-# ln -snvf $(pwd)/post-receive .git/hooks/post-receive
+# file `hooks/post-receive` in the remote which calls it.
 
 WORKDIR=~/piplayer
 ENV=.env.production
