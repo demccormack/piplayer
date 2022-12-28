@@ -5,7 +5,7 @@ WORKDIR /app/
 
 # Note: Working directory should be root of repo.
 COPY frontend .
-COPY .env* .
+COPY .env* ./
 
 # Install dependencies.
 RUN npm ci --only=production 
