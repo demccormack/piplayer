@@ -20,5 +20,9 @@ then
   GIT_WORK_TREE="$WORKDIR" git checkout -f deploy/production
   pushd "$WORKDIR"
   ! [[ "$(sudo docker ps | grep piplayer)" ]] || sudo docker-compose --env-file $ENV down
+  CONTAINERS=$(sudo docker ps -aq)
+  IMAGES=$(sudo docker images -q)
+  ! [[ "$CONTAINERS" ]] || sudo docker rm $CONTAINERS
+  ! [[ "$IMAGES" ]] || sudo docker rmi $IMAGES
   sudo bash ./run.sh $ENV
 fi
