@@ -1,13 +1,9 @@
-# Docker composition file. Use `docker-compose up -d` to start the services.
-
-# Warning: If this file is placed in a subdirectory, the volume mappings break.
-
 version: "3.9"
 
 services:
   piplayer.frontend:
     container_name: frontend
-    image: piplayer.frontend:latest
+    image: ${FRONTEND_IMAGE}
     restart: always
     ports:
       - ${FRONTEND_PORT}:80

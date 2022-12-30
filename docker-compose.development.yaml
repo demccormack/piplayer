@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  piplayer.frontend:
+    volumes:
+       - "./frontend/src:/app/src:ro"
+
+  piplayer.backend:
+    volumes:
+       - "./backend/src:/app/src:ro"
