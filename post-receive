@@ -2,19 +2,19 @@
 set -euxo pipefail
 
 # To use this script as a hook for continuous deployment, create a
-# file `hooks/post-receive` in the remote which calls it.
+# file `hooks/post-receive` in the remote which calls it with sudo.
 
 WORKDIR=~/piplayer
 ENV=.env.production
 build() {
-  if ! sudo docker build -t piplayer."$1" -f ./docker/"$1"/Dockerfile .
+  if ! docker build -t piplayer."$1" -f ./docker/"$1"/Dockerfile .
   then
     echo "Failed to build $1" 1>&2
     exit 1
   fi
 }
 image_of() {
-  sudo docker inspect $(sudo docker ps | grep "$1" | awk '{print $1}') | grep Image | grep sha256
+  docker inspect $(docker ps | grep "$1" | awk '{print $1}') | grep Image | grep sha256
 }
 
 # From https://gist.github.com/deanrather/3697539
@@ -39,11 +39,11 @@ then
   build backend
   build frontend
 
-  ! [[ "$(sudo docker ps | grep piplayer)" ]] || sudo docker-compose --env-file $ENV down
+  ! [[ "$(docker ps | grep piplayer)" ]] || docker-compose --env-file $ENV down
 
-  sudo docker-compose --env-file="$ENV" up --force-recreate -d
+  docker-compose --env-file="$ENV" up --force-recreate -d
 
-  sudo docker ps
+  docker ps
 
   [[ "$PROXY_WAS" == "$(image_of proxy)" ]] && echo "Proxy unchanged" || echo "Proxy has new image"
   [[ "$BACKEND_WAS" == "$(image_of backend)" ]] && echo "Backend unchanged" || echo "Backend has new image"
