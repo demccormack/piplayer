@@ -74,8 +74,8 @@ function Navbar(props) {
   }
 
   useEffect(() => {
-    fetchApi("", populateTree)
-  });
+    fetchApi("", populateTree);
+  }, []);
 
   return (
     <div id="Nav">
