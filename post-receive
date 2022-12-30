@@ -6,6 +6,16 @@ set -euxo pipefail
 
 WORKDIR=~/piplayer
 ENV=.env.production
+build() {
+  if ! sudo docker build -t piplayer."$1" -f ./docker/"$1"/Dockerfile .
+  then
+    echo "Failed to build $1" 1>&2
+    exit 1
+  fi
+}
+image_of() {
+  sudo docker inspect $(sudo docker ps | grep "$1" | awk '{print $1}') | grep Image | grep sha256
+}
 
 # From https://gist.github.com/deanrather/3697539
 echo "Determining branch"
@@ -20,10 +30,23 @@ GIT_WORK_TREE="$WORKDIR" git checkout -f "$BRANCH"
 if [[ "$BRANCH" == "deploy/production" ]] && [[ "$(hostname)" == "bier" ]]
 then
   pushd "$WORKDIR"
+
+  PROXY_WAS=$(image_of proxy)
+  BACKEND_WAS=$(image_of backend)
+  FRONTEND_WAS=$(image_of frontend)
+
+  build proxy
+  build backend
+  build frontend
+
   ! [[ "$(sudo docker ps | grep piplayer)" ]] || sudo docker-compose --env-file $ENV down
-  CONTAINERS=$(sudo docker ps -aq)
-  IMAGES=$(sudo docker images -q)
-  ! [[ "$CONTAINERS" ]] || sudo docker rm $CONTAINERS
-  ! [[ "$IMAGES" ]] || sudo docker rmi $IMAGES
-  sudo bash ./run.sh $ENV
+
+  sudo docker-compose --env-file="$ENV" up --force-recreate -d
+
+  sudo docker ps
+
+  [[ "$PROXY_WAS" == "$(image_of proxy)" ]] && echo "Proxy unchanged" || echo "Proxy has new image"
+  [[ "$BACKEND_WAS" == "$(image_of backend)" ]] && echo "Backend unchanged" || echo "Backend has new image"
+  [[ "$FRONTEND_WAS" == "$(image_of frontend)" ]] && echo "Frontend unchanged" || echo "Frontend has new image"
+  echo "Done"
 fi
