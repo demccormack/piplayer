@@ -18,6 +18,10 @@
 .env.test.local
 .env.production.local
 
+# These are copies of the files in the root of the repo and are copied over during npm start.
+.env.development
+.env.production
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
