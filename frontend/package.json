@@ -12,7 +12,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "cp -fv ../.env* . && react-scripts start",
+    "start": "[[ $(pwd) == /app ]] || cp -fv ../.env* . ; react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject"
