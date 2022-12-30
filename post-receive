@@ -45,6 +45,9 @@ then
 
   docker ps
 
+  # Clear out old unused images
+  docker images | grep '<none>' | awk '{print $3}' | xargs docker rmi
+
   [[ "$PROXY_WAS" == "$(image_of proxy)" ]] && echo "Proxy unchanged" || echo "Proxy has new image"
   [[ "$BACKEND_WAS" == "$(image_of backend)" ]] && echo "Backend unchanged" || echo "Backend has new image"
   [[ "$FRONTEND_WAS" == "$(image_of frontend)" ]] && echo "Frontend unchanged" || echo "Frontend has new image"
