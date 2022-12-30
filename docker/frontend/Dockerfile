@@ -8,7 +8,9 @@ COPY frontend .
 COPY .env* ./
 
 # Install dependencies.
-RUN npm ci --only=production 
+RUN npm ci --only=production
+
+RUN npm test
 
 # Build the static site.
 RUN npm run build 
