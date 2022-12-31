@@ -1,20 +1,20 @@
 import './App.css';
 import Navbar from './Navbar.js';
 import Player from './Player.js';
-import { useState } from "react";
+import { useState } from 'react';
 
 function App() {
-  const [playUrl, setPlayUrl] = useState("welcome");
+  const [playUrl, setPlayUrl] = useState('welcome');
 
   const handleRadioButtonChange = () => {
     const url = document.querySelector('input[name="file"]:checked').value;
     setPlayUrl(url);
-  }
+  };
 
   return (
     <div>
       <Navbar onRadioButtonChange={handleRadioButtonChange} />
-      <div id="main">
+      <div id='main'>
         <h1>Pi Player</h1>
         <Player url={playUrl} />
       </div>
