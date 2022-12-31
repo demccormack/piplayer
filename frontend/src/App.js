@@ -3,7 +3,7 @@ import Navbar from './Navbar.js';
 import Player from './Player.js';
 import { useState } from 'react';
 
-function App() {
+const App = () => {
   const [playUrl, setPlayUrl] = useState('welcome');
 
   const handleRadioButtonChange = () => {
@@ -20,6 +20,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;
