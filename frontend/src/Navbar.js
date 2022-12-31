@@ -1,8 +1,10 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import fetchApi from './api';
 import './App.css';
 
-function Navbar(props) {
+const Navbar = ({
+  onRadioButtonChange,
+}) => {
   const [items, setItems] = useState([]);
 
   /**
@@ -13,7 +15,7 @@ function Navbar(props) {
   */
   const getItemFromItems = (items, url) => {
     let obj = [...items];
-    let dirs = url.split('/');
+    const dirs = url.split('/');
     for (let i = 0; i < dirs.length; i++) {
         /* This workaround is needed because the root of the state object has a different structure to 
           the objects under it. To fix this properly, change the state object so the root also has children. */
@@ -57,18 +59,16 @@ function Navbar(props) {
    * @param {String} url The url of the directory to expand or collapse. 
    * This is the id of the checkbox.
   */
-  const handleCbCheckedChange = (url) => {
-    setItems(oldItems => {
-      const checked = document.getElementById(url).checked;
-      let result = [...oldItems];
-      let obj = getItemFromItems(result, url);
-      obj.expand = checked;
-      if (checked && obj.children.length === 0) {
-        fetchApi(url, populateTree);
-      }
-      return result;
-    })
-  }
+  const handleCbCheckedChange = (url) => setItems((oldItems) => {
+    const checked = document.getElementById(url).checked;
+    const result = [...oldItems];
+    const obj = getItemFromItems(result, url);
+    obj.expand = checked;
+    if (checked && obj.children.length === 0) {
+      fetchApi(url, populateTree);
+    }
+    return result;
+  });
 
   useEffect(() => {
     fetchApi("", populateTree);
@@ -76,8 +76,13 @@ function Navbar(props) {
 
   return (
     <div id="Nav">
-      {items.map(item => (
-        <Node key={item.url} item={item} onChange={handleCbCheckedChange} onRadioButtonChange={props.onRadioButtonChange} />
+      {items.map((item) => (
+        <Node
+          key={item.url}
+          item={item}
+          onChange={handleCbCheckedChange}
+          onRadioButtonChange={onRadioButtonChange}
+        />
       ))}
     </div>
   )
@@ -86,26 +91,49 @@ function Navbar(props) {
 
 
 
-function Node(props) {
-  const {name, type, url, expand, children} = props.item;
-  return (
-    <div className='navItem'>
-      {type === 'directory' ? (
-        <>
-          <input type='checkbox' checked={expand} id={url} onChange={() => props.onChange(url)} />
-          <label className='dirLabel'>{name}</label>
-          {expand && children.map(child => (
-            <Node key={child.url} item={child} onChange={props.onChange} onRadioButtonChange={props.onRadioButtonChange} />
-          ))}
-        </>
-      ) : (
-        <>
-          <input type='radio' name='file' id={url} value={url} onChange={props.onRadioButtonChange} />
-          <label className='fileLabel' htmlFor={url}>{name}</label>
-        </>
-      )}
-    </div>
-  )
-}
+const Node = ({
+  item: {
+    name,
+    type,
+    url,
+    expand,
+    children
+  },
+  onChange,
+  onRadioButtonChange,
+}) => (
+  <div className='navItem'>
+    {type === 'directory' ? <>
+      <input
+        type='checkbox'
+        checked={expand}
+        id={url}
+        onChange={() => onChange(url)}
+      />
+      <label className='dirLabel'>
+        {name}
+      </label>
+      {expand && children.map((child) => (
+        <Node
+          key={child.url}
+          item={child}
+          onChange={onChange}
+          onRadioButtonChange={onRadioButtonChange}
+        />
+      ))}
+    </> : <>
+      <input
+        type='radio'
+        name='file'
+        id={url}
+        value={url}
+        onChange={onRadioButtonChange}
+      />
+      <label className='fileLabel' htmlFor={url}>
+        {name}
+      </label>
+    </>}
+  </div>
+);
 
 export default Navbar;
