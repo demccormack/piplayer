@@ -30,26 +30,6 @@ GIT_WORK_TREE="$WORKDIR" git checkout -f "$BRANCH"
 if [[ "$BRANCH" == "deploy/production" ]] && [[ "$(hostname)" == "bier" ]]
 then
   pushd "$WORKDIR"
-
-  PROXY_WAS=$(image_of proxy)
-  BACKEND_WAS=$(image_of backend)
-  FRONTEND_WAS=$(image_of frontend)
-
-  build proxy
-  build backend
-  build frontend
-
-  ! [[ "$(docker ps | grep piplayer)" ]] || docker-compose --env-file $ENV down
-
-  docker-compose --env-file="$ENV" up --force-recreate -d
-
-  docker ps
-
-  # Clear out old unused images
-  docker images | grep '<none>' | awk '{print $3}' | xargs docker rmi
-
-  [[ "$PROXY_WAS" == "$(image_of proxy)" ]] && echo "Proxy unchanged" || echo "Proxy has new image"
-  [[ "$BACKEND_WAS" == "$(image_of backend)" ]] && echo "Backend unchanged" || echo "Backend has new image"
-  [[ "$FRONTEND_WAS" == "$(image_of frontend)" ]] && echo "Frontend unchanged" || echo "Frontend has new image"
-  echo "Done"
+  
+  bash ./build_and_run.sh "$ENV"
 fi
