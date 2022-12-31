@@ -31,21 +31,18 @@ function Navbar(props) {
    * @param {Array} items The items returned by the API.
    * @param {String} url The url of the directory to populate.
   */
-  const populateTree = (items, url) => {
-    const result = items.map((item) => {
-      return (item.type === 'directory') ? 
-        {
-          ...item,
-          expand: false,
-          children: []
-        } : 
-        item;
-    });
-    setItems(oldItems => {
+  const populateTree = useCallback((items, url) => {
+    const result = items.map((item) => (item.type === 'directory') ? {
+        ...item,
+        expand: false,
+        children: [],
+      } : item
+    );
+    setItems((oldItems) => {
       if (url) {
         // Find the item with the url and populate its children
-        let newItems = [...oldItems];
-        let obj = getItemFromItems(newItems, url);
+        const newItems = [...oldItems];
+        const obj = getItemFromItems(newItems, url);
         obj.children = result;
         return newItems;
       } else {
@@ -53,7 +50,7 @@ function Navbar(props) {
         return result;
       }
     });
-  }
+  }, [setItems]);
 
   /**
    * Expands or collapses a directory and gets its children if necessary.
@@ -75,7 +72,7 @@ function Navbar(props) {
 
   useEffect(() => {
     fetchApi("", populateTree);
-  }, []);
+  }, [populateTree]);
 
   return (
     <div id="Nav">
