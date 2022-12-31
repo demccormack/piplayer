@@ -11,7 +11,7 @@ You must have both Docker and Docker-Compose installed.
 2. Run the following command from the root of the repository.
 
 ```bash
-bash ./run.sh .env.development
+bash ./build_and_run.sh .env.development
 ```
 
 Then you can browse to http://localhost:3000/, view and play the video and music files in the directory tree.
@@ -38,6 +38,5 @@ Then you can browse to http://localhost:3000/, view and play the video and music
 ├── .env.production     # Environment variables for production
 ├── post-receive        # Hook for production deployments
 |
-└── run.sh              # Bash script to create and run the containers, with media and source 
-                        # code mounted as read-only volumes.
+└── build_and_run.sh    # Bash script to create and run the containers
 ```

@@ -1,7 +1,14 @@
 #!/bin/bash
 set -exuo pipefail
 
+if ! [[ "${1:-}" ]]
+then
+    echo "Usage: $0 /path/to/env/file"
+    false
+fi
+
 ENV="$1"
+# Source the env file
 eval $(cat "$ENV" | sed -e '/^$/d' -e '/^#/d' -e 's/^/export /')
 
 build() {
