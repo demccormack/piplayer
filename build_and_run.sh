@@ -35,11 +35,15 @@ build $FRONTEND_IMAGE
 
 ! [[ "$(docker ps | grep piplayer)" ]] || docker-compose --env-file $ENV down
 
+# Clear out old containers
+CONTAINERS=$(docker ps -aq) || true
+! [[ "$CONTAINERS" ]] || docker rm $CONTAINERS
+
 docker-compose --env-file="$ENV" ${DOCKER_COMPOSE_FILES:-} up --force-recreate -d
 
 docker ps
 
-# Clear out old unused images
+# Clear out old images
 IMAGES=$(docker images | grep '<none>' | awk '{print $3}') || true
 ! [[ "$IMAGES" ]] || docker rmi $IMAGES
 
