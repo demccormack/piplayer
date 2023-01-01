@@ -17,7 +17,7 @@ COPY backend/ .
 RUN python3 -m pip install -r requirements.txt
 
 RUN mkdir -pv /app/bin
-RUN [[ "$BACKEND_USER" == nopriv ]]  && ln -snvf /home/nopriv/.local/bin/gunicorn /app/bin/gunicorn || ln -snvf /usr/local/bin/gunicorn /app/bin/gunicorn
+RUN ln -snvf /usr/local/bin/gunicorn /app/bin/gunicorn
 
 # Set permissions to allow non-root user to run the Python code.
 RUN chown -R $BACKEND_USER:$BACKEND_USER /app && chmod -R 700 /app
