@@ -1,31 +1,29 @@
-import os
 import sys
-import urllib.parse
-from flask import Flask, request, jsonify
+from os import environ, listdir, path
+from urllib.parse import quote
+
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 app = Flask(__name__)
 
-CORS(app, origins=os.environ['CORS_ORIGINS'].split())
+CORS(app, origins=environ['CORS_ORIGINS'].split())
 
 mediaRoot = "/var/www/html/media/"
 
 @app.route('/', methods=['GET'])
 def get_films():
     dir = request.args.get('dir')
-    dirPath = os.path.join(mediaRoot, dir)
+    dirPath = path.join(mediaRoot, dir)
     return jsonify(filmTree(dirPath))
 
 def filmTree(dir):
-    ls = sorted(os.listdir(dir))
+    ls = sorted(listdir(dir))
     result = []
     for item in ls:
-        fullPath = os.path.join(dir, item)
-        url = urllib.parse.quote(fullPath[len(mediaRoot):])
-        if os.path.isdir(fullPath):
-            result.append({'name': item, 'type': 'directory', 'url': url})
-        else:
-            result.append({'name': item, 'type': 'file', 'url': url})
+        fullPath = path.join(dir, item)
+        url = quote(fullPath[len(mediaRoot):])
+        result.append({'name': item, 'type': 'directory' if path.isdir(fullPath) else 'file', 'url': url})
     return result
 
 
