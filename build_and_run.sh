@@ -12,7 +12,9 @@ ENV="$1"
 eval $(cat "$ENV" | sed -e '/^$/d' -e '/^#/d' -e 's/^/export /')
 
 build() {
-  if ! docker build -t piplayer."$1" -f ./docker/"$1"/Dockerfile .
+  NAME="$1"
+  BUILD_ARGS="${@:2}"
+  if ! docker build ${BUILD_ARGS:-} -t piplayer."$1" -f ./docker/"$1"/Dockerfile .
   then
     echo "Failed to build $1" 1>&2
     exit 1
@@ -30,7 +32,7 @@ then
 fi
 
 build proxy
-build backend
+build backend --build-arg BACKEND_USER=$BACKEND_USER
 build $FRONTEND_IMAGE
 
 ! [[ "$(docker ps | grep piplayer)" ]] || docker-compose --env-file $ENV down
