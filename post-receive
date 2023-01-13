@@ -6,18 +6,7 @@ set -euxo pipefail
 
 WORKDIR=~/piplayer
 ENV=.env.production
-build() {
-  if ! docker build -t piplayer."$1" -f ./docker/"$1"/Dockerfile .
-  then
-    echo "Failed to build $1" 1>&2
-    exit 1
-  fi
-}
-image_of() {
-  docker inspect $(docker ps | grep "$1" | awk '{print $1}') | grep Image | grep sha256
-}
 
-# From https://gist.github.com/deanrather/3697539
 echo "Determining branch"
 if ! [ -t 0 ]
 then
