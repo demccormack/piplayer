@@ -13,11 +13,11 @@ const App = () => {
 
   return (
     <div>
-      <Navbar onRadioButtonChange={handleRadioButtonChange} />
       <div id='main'>
         <h1>Pi Player</h1>
         <Player url={playUrl} />
       </div>
+      <Navbar onRadioButtonChange={handleRadioButtonChange} />
     </div>
   );
 };
