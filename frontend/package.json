@@ -15,7 +15,8 @@
     "start": "[[ $(pwd) == /app ]] || cp -fv ../.env* . ; react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "ssh bier 'cd piplayer.git && git branch -D deploy/production' && git push -f production master:deploy/production"
   },
   "eslintConfig": {
     "extends": [
