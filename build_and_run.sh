@@ -32,7 +32,7 @@ then
 fi
 
 build proxy
-build backend --build-arg BACKEND_USER=$BACKEND_USER
+build backend --build-arg BACKEND_USER=$BACKEND_USER --build-arg MEDIA="$MEDIA"
 build $FRONTEND_IMAGE
 
 ! [[ "$(docker ps | grep piplayer)" ]] || docker-compose --env-file $ENV down

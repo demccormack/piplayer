@@ -17,18 +17,19 @@ services:
   piplayer.backend:
     environment:
       - CORS_ORIGINS
+      - MEDIA
     container_name: backend
     image: piplayer.backend:latest
     restart: always
     volumes:
-       - "${MEDIA}:/var/www/html/media:ro"
+      - "${MEDIA}:${MEDIA}:ro"
     networks:
       - piplayer-network
     security_opt:
       - no-new-privileges
     cap_drop:
       - ALL
-  
+
   piplayer.proxy:
     container_name: proxy
     image: piplayer.proxy:latest
@@ -43,7 +44,6 @@ services:
       - no-new-privileges
     cap_drop:
       - ALL
-
 
 networks:
   piplayer-network:

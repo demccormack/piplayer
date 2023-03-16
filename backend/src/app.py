@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 CORS(app, origins=environ['CORS_ORIGINS'].split())
 
-mediaRoot = "/var/www/html/media/"
+mediaRoot = environ['MEDIA']
 
 @app.route('/', methods=['GET'])
 def get_films():

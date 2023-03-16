@@ -1,6 +1,6 @@
 FROM python:3.9-alpine
 
-ARG BACKEND_USER
+ARG BACKEND_USER MEDIA
 
 WORKDIR /app/
 
@@ -10,7 +10,7 @@ RUN addgroup -S nopriv && adduser -S -G nopriv nopriv
 RUN apk add --no-cache bash
 
 # Create the directory the API searches.
-RUN mkdir -pv /var/www/html/media/ && chmod -R 0755 /var/www/html/media/
+RUN mkdir -pv $MEDIA && chmod -R 0755 $MEDIA
 
 COPY backend/ .
 
