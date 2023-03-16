@@ -8,4 +8,4 @@ COPY frontend /app
 # Install dependencies.
 RUN npm install
 
-CMD ["npm", "start"]
+CMD npx vite --host 0.0.0.0
