@@ -15,9 +15,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["vitest/importMeta"],
+    "types": ["vitest/importMeta", "vitest/globals"],
     "sourceMap": true
   },
-  "include": ["src", "*.ts"],
+  "include": ["src", "tests", "*.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
