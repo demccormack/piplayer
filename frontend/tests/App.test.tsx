@@ -12,3 +12,8 @@ it('renders the title', () => {
     screen.getByRole('heading', { name: 'Pi Player' }),
   ).toBeInTheDocument();
 });
+
+it('renders the video player', () => {
+  render(<App />);
+  expect(screen.getByText('Video should play here').nodeName).toBe('VIDEO');
+});
