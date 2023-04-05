@@ -7,6 +7,7 @@ function App() {
   return (
     <div className="h-screen bg-gray-900 text-gray-400">
       <MainPanel videoSource={videoSource} />
+      <SideBar setVideoSource={setVideoSource} />
     </div>
   );
 }
@@ -23,6 +24,16 @@ function MainPanel({ videoSource }: { videoSource: string }) {
         Video should play here
       </video>
     </div>
+  );
+}
+
+function SideBar({
+  setVideoSource,
+}: {
+  setVideoSource: React.Dispatch<React.SetStateAction<string>>;
+}) {
+  return (
+    <nav className="fixed top-0 left-0 h-screen w-1/4 border-r-4 border-gray-400"></nav>
   );
 }
 

@@ -17,3 +17,8 @@ it('renders the video player', () => {
   render(<App />);
   expect(screen.getByText('Video should play here').nodeName).toBe('VIDEO');
 });
+
+it('renders the sidebar', () => {
+  render(<App />);
+  expect(screen.getByRole('navigation')).toBeInTheDocument();
+});
