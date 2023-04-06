@@ -11,6 +11,7 @@
     "deploy": "ssh bier 'cd piplayer.git && git branch -D deploy/production' && git push -f production master:deploy/production"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.28.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
