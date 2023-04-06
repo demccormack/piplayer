@@ -6,6 +6,11 @@ it('renders the app', () => {
   expect(container).toBeInTheDocument();
 });
 
+it('renders the main panel', () => {
+  render(<App />);
+  expect(screen.getByRole('main')).toBeInTheDocument();
+});
+
 it('renders the title', () => {
   render(<App />);
   expect(

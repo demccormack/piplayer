@@ -14,7 +14,7 @@ function App() {
 
 function MainPanel({ videoSource }: { videoSource: string }) {
   return (
-    <div className="text-center">
+    <main className="text-center">
       <h1 className="p-10 text-4xl font-bold">Pi Player</h1>
       <video
         className="m-auto h-40 w-60 border-4 border-gray-400"
@@ -23,7 +23,7 @@ function MainPanel({ videoSource }: { videoSource: string }) {
       >
         Video should play here
       </video>
-    </div>
+    </main>
   );
 }
 
