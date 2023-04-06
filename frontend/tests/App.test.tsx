@@ -27,3 +27,8 @@ it('renders the sidebar', () => {
   render(<App />);
   expect(screen.getByRole('navigation')).toBeInTheDocument();
 });
+
+it('renders the menu tree', () => {
+  render(<App />);
+  expect(screen.getByRole('tree').nodeName).toBe('MENU');
+});
