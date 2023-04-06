@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Environment files in this directory are symlinks to the ones in the repository root
+.env*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

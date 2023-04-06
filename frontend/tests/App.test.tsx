@@ -32,3 +32,8 @@ it('renders the menu tree', () => {
   render(<App />);
   expect(screen.getByRole('tree').nodeName).toBe('MENU');
 });
+
+it('receives the API and media URLs from environment variables', () => {
+  expect(import.meta.env.VITE_API_ROOT).toBeTruthy();
+  expect(import.meta.env.VITE_MEDIA_ROOT).toBeTruthy();
+});
