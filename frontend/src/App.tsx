@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 const MEDIA_ROOT: string = import.meta.env.VITE_MEDIA_ROOT;
 
@@ -34,9 +35,22 @@ function SideBar({
 }) {
   return (
     <nav className="fixed left-0 top-0 h-screen w-1/4 border-r-4 border-gray-400">
-      <menu role="tree"></menu>
+      <menu role="tree">
+        <MenuItem
+          url=""
+          setVideoSource={setVideoSource}
+        ></MenuItem>
+      </menu>
     </nav>
   );
+}
+
+function MenuItem({ url, setVideoSource }) {
+  const { isLoading, isError, data, error } = useQuery({
+    queryKey: ['media'],
+    queryFn: () => [],
+  });
+  return <span>{JSON.stringify(data)}</span>;
 }
 
 export default App;
