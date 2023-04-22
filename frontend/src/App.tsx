@@ -33,7 +33,7 @@ function SideBar({
   setVideoSource: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return (
-    <nav className="fixed top-0 left-0 h-screen w-1/4 border-r-4 border-gray-400">
+    <nav className="fixed left-0 top-0 h-screen w-1/4 border-r-4 border-gray-400">
       <menu role="tree"></menu>
     </nav>
   );
