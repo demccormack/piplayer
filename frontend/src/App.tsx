@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const MEDIA_ROOT = import.meta.env.VITE_MEDIA_ROOT;
+const MEDIA_ROOT: string = import.meta.env.VITE_MEDIA_ROOT;
 
 function App() {
   const [videoSource, setVideoSource] = useState(`${MEDIA_ROOT}welcome`);
