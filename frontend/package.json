@@ -8,7 +8,9 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "deploy": "ssh bier 'cd piplayer.git && git branch -D deploy/production' && git push -f production master:deploy/production"
+    "deploy": "ssh bier 'cd piplayer.git && git branch -D deploy/production' && git push -f production master:deploy/production",
+    "check": "npx eslint . && echo 'Linting checks passed!'; npx prettier --check .",
+    "format": "npx prettier --write ."
   },
   "dependencies": {
     "@tanstack/react-query": "^4.28.0",
