@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 function App() {
   const [videoSource, setVideoSource] = useState(
-    'http://localhost:55000/Popcorn%20Time/Devotion/Devotion.mkv',
+    'http://localhost:55001/welcome',
   );
   return (
     <div className="h-screen bg-gray-900 text-gray-400">
