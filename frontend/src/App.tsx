@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
+const MEDIA_ROOT = import.meta.env.VITE_MEDIA_ROOT;
+
 function App() {
-  const [videoSource, setVideoSource] = useState(
-    'http://localhost:55001/welcome',
-  );
+  const [videoSource, setVideoSource] = useState(`${MEDIA_ROOT}welcome`);
   return (
     <div className="h-screen bg-gray-900 text-gray-400">
       <MainPanel videoSource={videoSource} />

@@ -37,3 +37,12 @@ it('receives the API and media URLs from environment variables', () => {
   expect(import.meta.env.VITE_API_ROOT).toBeTruthy();
   expect(import.meta.env.VITE_MEDIA_ROOT).toBeTruthy();
 });
+
+it('loads media from source specified in environment variables', () => {
+  render(<App />);
+  const MEDIA_ROOT = import.meta.env.VITE_MEDIA_ROOT;
+  expect(MEDIA_ROOT).toBeTruthy();
+  expect(
+    screen.getByText('Video should play here').getAttribute('src'),
+  ).toMatch(new RegExp(`^${MEDIA_ROOT}`));
+});
