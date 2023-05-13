@@ -64,7 +64,7 @@ function MenuItem({
 }: {
   item: MediaItem;
   setVideoSource: React.Dispatch<React.SetStateAction<string>>;
-  isTopLevel: boolean;
+  isTopLevel?: boolean;
 }) {
   const [expanded, setExpanded] = useState(isTopLevel);
 
@@ -97,7 +97,6 @@ function MenuItem({
             <MenuItemChildren
               data={data}
               setVideoSource={setVideoSource}
-              isTopLevel={false}
             />
           )}
         </>
@@ -124,7 +123,7 @@ function MenuItemChildren({
 }: {
   data: MediaItem[];
   setVideoSource: React.Dispatch<React.SetStateAction<string>>;
-  isTopLevel: boolean;
+  isTopLevel?: boolean;
 }) {
   return (
     <>
@@ -138,7 +137,6 @@ function MenuItemChildren({
             <MenuItem
               item={item}
               setVideoSource={setVideoSource}
-              isTopLevel={false}
             />
           </Suspense>
         </div>
