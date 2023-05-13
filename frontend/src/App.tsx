@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
+const API_ROOT: string = import.meta.env.VITE_API_ROOT;
 const MEDIA_ROOT: string = import.meta.env.VITE_MEDIA_ROOT;
 
 function App() {
@@ -45,11 +47,20 @@ function SideBar({
   );
 }
 
-function MenuItem({ url, setVideoSource }) {
-  const { isLoading, isError, data, error } = useQuery({
-    queryKey: ['media'],
-    queryFn: () => [],
+function MenuItem({
+  url,
+  setVideoSource,
+}: {
+  url: string;
+  setVideoSource: React.Dispatch<React.SetStateAction<string>>;
+}) {
+  const { isLoading, data: { data } = {} } = useQuery({
+    queryKey: ['media', url],
+    queryFn: () => axios.get(API_ROOT, { params: { dir: url } }),
   });
+
+  if (isLoading) return <>Loading...</>;
+
   return <span>{JSON.stringify(data)}</span>;
 }
 
