@@ -1,12 +1,12 @@
 import { Suspense, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 const API_ROOT: string = import.meta.env.VITE_API_ROOT;
 const MEDIA_ROOT: string = import.meta.env.VITE_MEDIA_ROOT;
 
 function App() {
-  const [videoSource, setVideoSource] = useState(`${MEDIA_ROOT}welcome`);
+  const [videoSource, setVideoSource] = useState('welcome');
   return (
     <div className="h-screen bg-gray-900 text-gray-400">
       <MainPanel videoSource={videoSource} />
@@ -21,7 +21,7 @@ function MainPanel({ videoSource }: { videoSource: string }) {
       <h1 className="p-10 text-4xl font-bold">Pi Player</h1>
       <video
         className="m-auto h-40 w-60 border-4 border-gray-400"
-        src={videoSource}
+        src={`${MEDIA_ROOT}${videoSource}`}
         controls
       >
         Video should play here
@@ -40,8 +40,9 @@ function SideBar({
       <menu role="tree">
         <Suspense fallback={<>Loading...</>}>
           <MenuItem
-            url=""
+            item={{ name: 'top', type: 'directory', url: '' }}
             setVideoSource={setVideoSource}
+            isTopLevel
           />
         </Suspense>
       </menu>
@@ -49,19 +50,73 @@ function SideBar({
   );
 }
 
-function MenuItem({
-  url,
-  setVideoSource,
-}: {
+interface mediaItem {
+  name: string;
+  type: 'directory' | 'file';
   url: string;
+}
+
+function MenuItem({
+  item: { name, type, url },
+  setVideoSource,
+  isTopLevel = false,
+}: {
+  item: mediaItem;
   setVideoSource: React.Dispatch<React.SetStateAction<string>>;
+  isTopLevel: boolean;
 }) {
-  const { data: { data } = {} } = useQuery({
+  const [expanded, setExpanded] = useState(isTopLevel);
+  const {
+    data: { data } = { data: [] },
+  }: UseQueryResult<{ data: mediaItem[] }> = useQuery({
     queryKey: ['media', url],
     queryFn: () => axios.get(API_ROOT, { params: { dir: url } }),
+    enabled: expanded,
   });
 
-  return <span>{JSON.stringify(data)}</span>;
+  return (
+    <>
+      {type === 'directory' ? (
+        <>
+          <input
+            id={url || name}
+            type="checkbox"
+            checked={expanded}
+            onChange={() => setExpanded((prev) => !prev)}
+          />
+          <label htmlFor={url || name}>{name}</label>
+          {expanded && (
+            <div
+              className="ml-5"
+              key={url}
+              role="menuitem"
+            >
+              <Suspense fallback={<>Loading...</>}>
+                {data.map((item) => (
+                  <MenuItem
+                    item={item}
+                    setVideoSource={setVideoSource}
+                    isTopLevel={false}
+                  />
+                ))}
+              </Suspense>
+            </div>
+          )}
+        </>
+      ) : (
+        <>
+          <input
+            type="radio"
+            name="videoSource"
+            id={url}
+            value={url}
+            onChange={() => setVideoSource(url)}
+          />
+          <label htmlFor={url}>{name}</label>
+        </>
+      )}
+    </>
+  );
 }
 
 export default App;
