@@ -50,7 +50,7 @@ function SideBar({
   );
 }
 
-interface mediaItem {
+interface MediaItem {
   name: string;
   type: 'directory' | 'file';
   url: string;
@@ -61,14 +61,15 @@ function MenuItem({
   setVideoSource,
   isTopLevel = false,
 }: {
-  item: mediaItem;
+  item: MediaItem;
   setVideoSource: React.Dispatch<React.SetStateAction<string>>;
   isTopLevel: boolean;
 }) {
   const [expanded, setExpanded] = useState(isTopLevel);
+
   const {
     data: { data } = { data: [] },
-  }: UseQueryResult<{ data: mediaItem[] }> = useQuery({
+  }: UseQueryResult<{ data: MediaItem[] }> = useQuery({
     queryKey: ['media', url],
     queryFn: () => axios.get(API_ROOT, { params: { dir: url } }),
     enabled: expanded,
@@ -77,7 +78,10 @@ function MenuItem({
   return isTopLevel ? (
     <>
       {data.map((item) => (
-        <div key={item.url}>
+        <div
+          key={item.url}
+          role="menuitem"
+        >
           <Suspense fallback={<>Loading...</>}>
             <MenuItem
               item={item}
@@ -93,12 +97,12 @@ function MenuItem({
       {type === 'directory' ? (
         <>
           <input
-            id={url || name}
+            id={url}
             type="checkbox"
             checked={expanded}
             onChange={() => setExpanded((prev) => !prev)}
           />
-          <label htmlFor={url || name}>{name}</label>
+          <label htmlFor={url}>{name}</label>
           {expanded && (
             <>
               {data.map((item) => (
