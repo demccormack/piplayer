@@ -77,22 +77,11 @@ function MenuItem({
   });
 
   return isTopLevel ? (
-    <>
-      {data.map((item) => (
-        <div
-          key={item.url}
-          role="treeitem"
-        >
-          <Suspense fallback={<>Loading...</>}>
-            <MenuItem
-              item={item}
-              setVideoSource={setVideoSource}
-              isTopLevel={false}
-            />
-          </Suspense>
-        </div>
-      ))}
-    </>
+    <MenuItemChildren
+      data={data}
+      setVideoSource={setVideoSource}
+      isTopLevel
+    />
   ) : (
     <>
       {type === 'directory' ? (
@@ -105,23 +94,11 @@ function MenuItem({
           />
           <label htmlFor={url}>{name}</label>
           {expanded && (
-            <>
-              {data.map((item) => (
-                <div
-                  className="ml-5"
-                  key={item.url}
-                  role="treeitem"
-                >
-                  <Suspense fallback={<>Loading...</>}>
-                    <MenuItem
-                      item={item}
-                      setVideoSource={setVideoSource}
-                      isTopLevel={false}
-                    />
-                  </Suspense>
-                </div>
-              ))}
-            </>
+            <MenuItemChildren
+              data={data}
+              setVideoSource={setVideoSource}
+              isTopLevel={false}
+            />
           )}
         </>
       ) : (
@@ -136,6 +113,36 @@ function MenuItem({
           <label htmlFor={url}>{name}</label>
         </>
       )}
+    </>
+  );
+}
+
+function MenuItemChildren({
+  data,
+  setVideoSource,
+  isTopLevel,
+}: {
+  data: MediaItem[];
+  setVideoSource: React.Dispatch<React.SetStateAction<string>>;
+  isTopLevel: boolean;
+}) {
+  return (
+    <>
+      {data.map((item) => (
+        <div
+          className={isTopLevel ? undefined : 'ml-5'}
+          key={item.url}
+          role="treeitem"
+        >
+          <Suspense fallback={<>Loading...</>}>
+            <MenuItem
+              item={item}
+              setVideoSource={setVideoSource}
+              isTopLevel={false}
+            />
+          </Suspense>
+        </div>
+      ))}
     </>
   );
 }
