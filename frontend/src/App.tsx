@@ -81,7 +81,7 @@ function MenuItem({
       {data.map((item) => (
         <div
           key={item.url}
-          role="menuitem"
+          role="treeitem"
         >
           <Suspense fallback={<>Loading...</>}>
             <MenuItem
@@ -110,7 +110,7 @@ function MenuItem({
                 <div
                   className="ml-5"
                   key={item.url}
-                  role="menuitem"
+                  role="treeitem"
                 >
                   <Suspense fallback={<>Loading...</>}>
                     <MenuItem
