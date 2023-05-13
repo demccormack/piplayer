@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -38,10 +38,12 @@ function SideBar({
   return (
     <nav className="fixed left-0 top-0 h-screen w-1/4 border-r-4 border-gray-400">
       <menu role="tree">
-        <MenuItem
-          url=""
-          setVideoSource={setVideoSource}
-        ></MenuItem>
+        <Suspense fallback={<>Loading...</>}>
+          <MenuItem
+            url=""
+            setVideoSource={setVideoSource}
+          />
+        </Suspense>
       </menu>
     </nav>
   );
@@ -54,12 +56,10 @@ function MenuItem({
   url: string;
   setVideoSource: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  const { isLoading, data: { data } = {} } = useQuery({
+  const { data: { data } = {} } = useQuery({
     queryKey: ['media', url],
     queryFn: () => axios.get(API_ROOT, { params: { dir: url } }),
   });
-
-  if (isLoading) return <>Loading...</>;
 
   return <span>{JSON.stringify(data)}</span>;
 }
