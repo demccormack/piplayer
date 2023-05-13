@@ -75,7 +75,11 @@ function MenuItem({
   });
 
   return (
-    <>
+    <div
+      className="ml-5"
+      key={url}
+      role="menuitem"
+    >
       {type === 'directory' ? (
         <>
           <input
@@ -86,21 +90,17 @@ function MenuItem({
           />
           <label htmlFor={url || name}>{name}</label>
           {expanded && (
-            <div
-              className="ml-5"
-              key={url}
-              role="menuitem"
-            >
-              <Suspense fallback={<>Loading...</>}>
-                {data.map((item) => (
+            <>
+              {data.map((item) => (
+                <Suspense fallback={<>Loading...</>}>
                   <MenuItem
                     item={item}
                     setVideoSource={setVideoSource}
                     isTopLevel={false}
                   />
-                ))}
-              </Suspense>
-            </div>
+                </Suspense>
+              ))}
+            </>
           )}
         </>
       ) : (
@@ -115,7 +115,7 @@ function MenuItem({
           <label htmlFor={url}>{name}</label>
         </>
       )}
-    </>
+    </div>
   );
 }
 
