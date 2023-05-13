@@ -36,7 +36,7 @@ function SideBar({
   setVideoSource: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return (
-    <nav className="fixed left-0 top-0 h-screen w-1/4 border-r-4 border-gray-400">
+    <nav className="fixed left-0 top-0 h-screen w-1/4 resize-x overflow-auto whitespace-nowrap border-r-4 border-gray-400">
       <menu role="tree">
         <Suspense fallback={<>Loading...</>}>
           <MenuItem
