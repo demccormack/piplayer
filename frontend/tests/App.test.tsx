@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from '../src/App';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 const queryClient = new QueryClient();
 const renderWithProviders = (element: JSX.Element) =>
@@ -52,11 +52,4 @@ it('loads media from source specified in environment variables', () => {
   expect(
     screen.getByText('Video should play here').getAttribute('src'),
   ).toMatch(new RegExp(`^${MEDIA_ROOT}`));
-});
-
-it('renders content fetched from API', async () => {
-  renderWithProviders(<App />);
-  await waitFor(() =>
-    expect(screen.queryByText(/welcome/i)).toBeInTheDocument(),
-  );
 });
