@@ -1,6 +1,6 @@
 import sys
 from os import environ, listdir, path
-from urllib.parse import quote
+from urllib.parse import quote, unquote
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -13,7 +13,7 @@ mediaRoot = environ['MEDIA']
 
 @app.route('/', methods=['GET'])
 def get_films():
-    dir = request.args.get('dir')
+    dir = unquote(request.args.get('dir'))
     dirPath = path.join(mediaRoot, dir)
     return jsonify(filmTree(dirPath))
 
