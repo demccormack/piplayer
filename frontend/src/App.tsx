@@ -86,13 +86,12 @@ function MenuItem({
     <>
       {type === 'directory' ? (
         <>
-          <input
-            id={url}
-            type="checkbox"
-            checked={expanded}
-            onChange={() => setExpanded((prev) => !prev)}
+          <MenuItemHeader
+            name={name}
+            url={url}
+            expanded={expanded}
+            setExpanded={setExpanded}
           />
-          <label htmlFor={url}>{name}</label>
           {expanded && (
             <MenuItemChildren
               data={data}
@@ -133,7 +132,18 @@ function MenuItemChildren({
           key={item.url}
           role="treeitem"
         >
-          <Suspense fallback={<>Loading...</>}>
+          <Suspense
+            fallback={
+              <>
+                <MenuItemHeader
+                  name={item.name}
+                  url={item.url}
+                  expanded
+                />
+                ...
+              </>
+            }
+          >
             <MenuItem
               item={item}
               setVideoSource={setVideoSource}
@@ -141,6 +151,30 @@ function MenuItemChildren({
           </Suspense>
         </div>
       ))}
+    </>
+  );
+}
+
+function MenuItemHeader({
+  name,
+  url,
+  expanded,
+  setExpanded,
+}: {
+  name: string;
+  url: string;
+  expanded: boolean;
+  setExpanded?: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  return (
+    <>
+      <input
+        id={url}
+        type="checkbox"
+        checked={expanded}
+        onChange={() => setExpanded?.((prev) => !prev)}
+      />
+      <label htmlFor={url}>{name}</label>
     </>
   );
 }
