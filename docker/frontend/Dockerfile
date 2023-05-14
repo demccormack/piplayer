@@ -12,6 +12,7 @@ RUN npm ci
 
 COPY .env* ./
 
+RUN npm run check
 RUN npm test
 
 # Build the static site.
