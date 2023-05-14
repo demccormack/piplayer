@@ -40,6 +40,6 @@ RUN rm -rfv /usr/share/nginx/html && ln -snvf /app/ /usr/share/nginx/html
 USER nginx
 
 # Copy the built static site from the build container to the Nginx container.
-COPY --from=buildenv /app/build /app/
+COPY --from=buildenv /app/dist /app/
 
 CMD ["nginx", "-g", "daemon off;"]
