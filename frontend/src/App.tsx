@@ -8,7 +8,7 @@ const MEDIA_ROOT: string = import.meta.env.VITE_MEDIA_ROOT;
 function App() {
   const [videoSource, setVideoSource] = useState('welcome');
   return (
-    <div className="h-screen bg-gray-900 text-gray-400">
+    <div className="h-screen text-gray-400">
       <MainPanel videoSource={videoSource} />
       <SideBar setVideoSource={setVideoSource} />
     </div>
