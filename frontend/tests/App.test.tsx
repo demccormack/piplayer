@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App, { QueryContext } from '../src/App';
 import { render, screen } from '@testing-library/react';
 import TestQueryContextValue from './mocks/TestQueryContextValue';
+import top from './mocks/top.json';
 
 const queryClient = new QueryClient();
 const renderWithProviders = (element: JSX.Element) =>
@@ -55,4 +56,11 @@ it('loads media from source specified in environment variables', () => {
   expect(
     screen.getByText('Video should play here').getAttribute('src'),
   ).toMatch(new RegExp(`^${MEDIA_ROOT}`));
+});
+
+it('renders tree items', () => {
+  renderWithProviders(<App />);
+  top.forEach(({ name }) =>
+    expect(screen.getByRole('treeitem', { name })).toBeInTheDocument(),
+  );
 });
