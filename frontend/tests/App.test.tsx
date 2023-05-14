@@ -1,11 +1,20 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import App from '../src/App';
+import App, { QueryContext } from '../src/App';
 import { render, screen } from '@testing-library/react';
 
 const queryClient = new QueryClient();
 const renderWithProviders = (element: JSX.Element) =>
   render(
-    <QueryClientProvider client={queryClient}>{element}</QueryClientProvider>,
+    <QueryContext.Provider
+      value={{
+        queryFn: async (arg1, arg2) =>
+          await Promise.resolve({
+            data: [{ name: 'firstitem', type: 'directory', url: 'firstitem' }],
+          }),
+      }}
+    >
+      <QueryClientProvider client={queryClient}>{element}</QueryClientProvider>
+    </QueryContext.Provider>,
   );
 
 it('renders the app', () => {

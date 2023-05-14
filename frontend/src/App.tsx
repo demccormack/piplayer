@@ -1,9 +1,25 @@
-import { Suspense, useState } from 'react';
+import { Suspense, createContext, useContext, useState } from 'react';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 const API_ROOT: string = import.meta.env.VITE_API_ROOT;
 const MEDIA_ROOT: string = import.meta.env.VITE_MEDIA_ROOT;
+
+interface QueryContextType {
+  queryFn: (
+    API_ROOT: string,
+    {
+      params: { dir },
+    }: { params: { dir: string } },
+  ) => Promise<any>;
+}
+
+export const AppQueryContextValue: QueryContextType = {
+  queryFn: (arg1, arg2) => axios.get(arg1, arg2),
+};
+
+export const QueryContext =
+  createContext<QueryContextType>(AppQueryContextValue);
 
 function App() {
   const [videoSource, setVideoSource] = useState('welcome');
@@ -67,12 +83,13 @@ function MenuItem({
   isTopLevel?: boolean;
 }) {
   const [expanded, setExpanded] = useState(isTopLevel);
+  const { queryFn } = useContext(QueryContext);
 
   const {
     data: { data } = { data: [] },
   }: UseQueryResult<{ data: MediaItem[] }> = useQuery({
     queryKey: ['media', item.url],
-    queryFn: () => axios.get(API_ROOT, { params: { dir: item.url } }),
+    queryFn: () => queryFn(API_ROOT, { params: { dir: item.url } }),
     enabled: expanded,
   });
 
