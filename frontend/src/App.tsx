@@ -58,7 +58,7 @@ interface MediaItem {
 }
 
 function MenuItem({
-  item: { name, type, url },
+  item,
   setVideoSource,
   isTopLevel = false,
 }: {
@@ -71,8 +71,8 @@ function MenuItem({
   const {
     data: { data } = { data: [] },
   }: UseQueryResult<{ data: MediaItem[] }> = useQuery({
-    queryKey: ['media', url],
-    queryFn: () => axios.get(API_ROOT, { params: { dir: url } }),
+    queryKey: ['media', item.url],
+    queryFn: () => axios.get(API_ROOT, { params: { dir: item.url } }),
     enabled: expanded,
   });
 
@@ -84,32 +84,17 @@ function MenuItem({
     />
   ) : (
     <>
-      {type === 'directory' ? (
-        <>
-          <MenuItemHeader
-            name={name}
-            url={url}
-            expanded={expanded}
-            setExpanded={setExpanded}
-          />
-          {expanded && (
-            <MenuItemChildren
-              data={data}
-              setVideoSource={setVideoSource}
-            />
-          )}
-        </>
-      ) : (
-        <>
-          <input
-            type="radio"
-            name="videoSource"
-            id={url}
-            value={url}
-            onChange={() => setVideoSource(url)}
-          />
-          <label htmlFor={url}>{name}</label>
-        </>
+      <MenuItemHeader
+        item={item}
+        expanded={expanded}
+        setExpanded={setExpanded}
+        setVideoSource={setVideoSource}
+      />
+      {expanded && (
+        <MenuItemChildren
+          data={data}
+          setVideoSource={setVideoSource}
+        />
       )}
     </>
   );
@@ -136,8 +121,7 @@ function MenuItemChildren({
             fallback={
               <>
                 <MenuItemHeader
-                  name={item.name}
-                  url={item.url}
+                  item={item}
                   expanded
                 />
                 ...
@@ -156,25 +140,40 @@ function MenuItemChildren({
 }
 
 function MenuItemHeader({
-  name,
-  url,
+  item: { name, type, url },
   expanded,
   setExpanded,
+  setVideoSource,
 }: {
-  name: string;
-  url: string;
+  item: MediaItem;
   expanded: boolean;
   setExpanded?: React.Dispatch<React.SetStateAction<boolean>>;
+  setVideoSource?: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return (
     <>
-      <input
-        id={url}
-        type="checkbox"
-        checked={expanded}
-        onChange={() => setExpanded?.((prev) => !prev)}
-      />
-      <label htmlFor={url}>{name}</label>
+      {type === 'directory' ? (
+        <input
+          id={url}
+          type="checkbox"
+          checked={expanded}
+          onChange={() => setExpanded?.((prev) => !prev)}
+        />
+      ) : (
+        <input
+          type="radio"
+          name="videoSource"
+          id={url}
+          value={url}
+          onChange={() => setVideoSource?.(url)}
+        />
+      )}
+      <label
+        htmlFor={url}
+        className="ml-2"
+      >
+        {name}
+      </label>
     </>
   );
 }
