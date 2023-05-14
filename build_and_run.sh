@@ -37,19 +37,21 @@ build $FRONTEND_IMAGE
 
 ! [[ "$(docker ps | grep piplayer)" ]] || docker-compose --env-file $ENV down
 
-# Clear out old containers
-CONTAINERS=$(docker ps -aq) || true
-! [[ "$CONTAINERS" ]] || docker rm $CONTAINERS
-
 docker-compose --env-file="$ENV" ${DOCKER_COMPOSE_FILES:-} up --force-recreate -d
 
-docker ps
-
-# Clear out old images
+# Clear out old containers and images
+CONTAINERS=$(docker ps -a | grep -v 'piplayer.*latest' | tail +2 | awk '{print $1}') || true
+if [[ "$CONTAINERS" ]]
+then
+  docker stop $CONTAINERS
+  docker rm $CONTAINERS
+fi
 IMAGES=$(docker images | grep '<none>' | awk '{print $3}') || true
 ! [[ "$IMAGES" ]] || docker rmi $IMAGES
 
+# Report results
 [[ "${PROXY_WAS:-}" == "$(image_of proxy)" ]] && echo "Proxy unchanged" || echo "Proxy has new image"
 [[ "${BACKEND_WAS:-}" == "$(image_of backend)" ]] && echo "Backend unchanged" || echo "Backend has new image"
 [[ "${FRONTEND_WAS:-}" == "$(image_of $FRONTEND_IMAGE)" ]] && echo "Frontend unchanged" || echo "Frontend has new image"
+docker ps
 echo "Done"
