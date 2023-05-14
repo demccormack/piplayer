@@ -5,7 +5,7 @@ import axios from 'axios';
 const API_ROOT: string = import.meta.env.VITE_API_ROOT;
 const MEDIA_ROOT: string = import.meta.env.VITE_MEDIA_ROOT;
 
-interface QueryContextType {
+export interface QueryContextType {
   queryFn: (
     API_ROOT: string,
     {
