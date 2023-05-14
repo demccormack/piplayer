@@ -15,6 +15,7 @@ fi
 BRANCH=$(sed 's,refs/heads/,,' <<< "${ref[2]}")
 
 GIT_WORK_TREE="$WORKDIR" git checkout -f "$BRANCH"
+GIT_WORK_TREE="$WORKDIR" git clean -fdx
 
 if [[ "$BRANCH" == "deploy/production" ]] && [[ "$(hostname)" == "bier" ]]
 then
