@@ -1,6 +1,8 @@
 ### Build React app as static site ###
 FROM node:lts-alpine as buildenv
 
+ARG CI=true
+
 WORKDIR /app/
 
 # Note: Working directory should be root of repo.
