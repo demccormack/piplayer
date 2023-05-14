@@ -4,7 +4,7 @@ set -euxo pipefail
 # To use this script as a hook for continuous deployment, create a
 # file `hooks/post-receive` in the remote which calls it with sudo.
 
-WORKDIR=~/piplayer
+WORKDIR="$HOME/piplayer"
 ENV=.env.production
 
 echo "Determining branch"
