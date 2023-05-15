@@ -1,7 +1,7 @@
 import { QueryContextType } from '../../src/App';
-import top from './top.json';
-import Films from './Films.json';
-import OfficeSpace from './OfficeSpace.json';
+import top from './top';
+import Films from './Films';
+import OfficeSpace from './OfficeSpace';
 
 const TestQueryContextValue: QueryContextType = {
   queryFn: async (_API_ROOT, { params: { dir } }) =>

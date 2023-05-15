@@ -11,7 +11,7 @@ export interface QueryContextType {
     {
       params: { dir },
     }: { params: { dir: string } },
-  ) => Promise<any>;
+  ) => Promise<{ data: MediaItem[] | string }>;
 }
 
 export const AppQueryContextValue: QueryContextType = {

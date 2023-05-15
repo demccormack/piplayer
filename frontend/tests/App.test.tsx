@@ -3,9 +3,9 @@ import App, { MediaItem, QueryContext } from '../src/App';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TestQueryContextValue from './mocks/TestQueryContextValue';
-import top from './mocks/top.json';
-import Films from './mocks/Films.json';
-import OfficeSpace from './mocks/OfficeSpace.json';
+import top from './mocks/top';
+import Films from './mocks/Films';
+import OfficeSpace from './mocks/OfficeSpace';
 
 const randomItemNameFrom = (array: MediaItem[]) =>
   array[Math.floor(Math.random() * array.length)].name;
