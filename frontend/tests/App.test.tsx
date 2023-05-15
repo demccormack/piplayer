@@ -1,8 +1,12 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App, { QueryContext } from '../src/App';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import TestQueryContextValue from './mocks/TestQueryContextValue';
 import top from './mocks/top.json';
+import Films from './mocks/Films.json';
+
+const user = userEvent.setup();
 
 const queryClient = new QueryClient();
 const renderWithProviders = (element: JSX.Element) =>
@@ -63,4 +67,13 @@ it('renders tree items', () => {
   top.forEach(({ name }) =>
     expect(screen.getByRole('treeitem', { name })).toBeInTheDocument(),
   );
+});
+
+it('fetches and renders child tree items on click', async () => {
+  renderWithProviders(<App />);
+  expect(screen.getByRole('treeitem', { name: 'Films' })).toBeInTheDocument();
+  await user.click(screen.getByRole('treeitem', { name: 'Films' }));
+  Films.forEach(({ name }) => {
+    expect(screen.getByRole('treeitem', { name })).toBeInTheDocument();
+  });
 });
