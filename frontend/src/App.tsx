@@ -132,7 +132,6 @@ function MenuItemChildren({
         <div
           className={isTopLevel ? undefined : 'ml-5'}
           key={item.url}
-          role="treeitem"
         >
           <Suspense
             fallback={
@@ -173,14 +172,16 @@ function MenuItemHeader({
         <input
           id={url}
           type="checkbox"
+          role="treeitem"
           checked={expanded}
           onChange={() => setExpanded?.((prev) => !prev)}
         />
       ) : (
         <input
-          type="radio"
-          name="videoSource"
           id={url}
+          type="radio"
+          role="treeitem"
+          name="videoSource"
           value={url}
           onChange={() => setVideoSource?.(url)}
         />
