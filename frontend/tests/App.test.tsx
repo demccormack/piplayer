@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import TestQueryContextValue from './mocks/TestQueryContextValue';
 import top from './mocks/top.json';
 import Films from './mocks/Films.json';
+import OfficeSpace from './mocks/OfficeSpace.json';
 
 const user = userEvent.setup();
 
@@ -74,6 +75,19 @@ it('fetches and renders child tree items on click', async () => {
   expect(screen.getByRole('treeitem', { name: 'Films' })).toBeInTheDocument();
   await user.click(screen.getByRole('treeitem', { name: 'Films' }));
   Films.forEach(({ name }) => {
+    expect(screen.getByRole('treeitem', { name })).toBeInTheDocument();
+  });
+});
+
+it('fetches and renders child tree items two levels deep', async () => {
+  renderWithProviders(<App />);
+  expect(screen.getByRole('treeitem', { name: 'Films' })).toBeInTheDocument();
+  await user.click(screen.getByRole('treeitem', { name: 'Films' }));
+  Films.forEach(({ name }) => {
+    expect(screen.getByRole('treeitem', { name })).toBeInTheDocument();
+  });
+  await user.click(screen.getByRole('treeitem', { name: 'OfficeSpace' }));
+  OfficeSpace.forEach(({ name }) => {
     expect(screen.getByRole('treeitem', { name })).toBeInTheDocument();
   });
 });
