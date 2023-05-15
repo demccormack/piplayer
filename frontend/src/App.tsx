@@ -67,7 +67,7 @@ function SideBar({
   );
 }
 
-interface MediaItem {
+export interface MediaItem {
   name: string;
   type: 'directory' | 'file';
   url: string;
