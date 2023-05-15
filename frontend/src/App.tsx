@@ -107,12 +107,11 @@ function MenuItem({
         setExpanded={setExpanded}
         setVideoSource={setVideoSource}
       />
-      {expanded && (
-        <MenuItemChildren
-          data={data}
-          setVideoSource={setVideoSource}
-        />
-      )}
+      <MenuItemChildren
+        data={data}
+        setVideoSource={setVideoSource}
+        hidden={!expanded}
+      />
     </>
   );
 }
@@ -121,16 +120,20 @@ function MenuItemChildren({
   data,
   setVideoSource,
   isTopLevel,
+  hidden,
 }: {
   data: MediaItem[];
   setVideoSource: React.Dispatch<React.SetStateAction<string>>;
   isTopLevel?: boolean;
+  hidden?: boolean;
 }) {
+  const className =
+    [isTopLevel ? '' : 'ml-5', hidden ? 'hidden' : ''].join(' ') || undefined;
   return (
     <>
       {data.map((item) => (
         <div
-          className={isTopLevel ? undefined : 'ml-5'}
+          className={className}
           key={item.url}
         >
           <Suspense
