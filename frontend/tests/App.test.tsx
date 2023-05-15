@@ -91,3 +91,31 @@ it('fetches and renders child tree items two levels deep', async () => {
     expect(screen.getByRole('treeitem', { name })).toBeInTheDocument();
   });
 });
+
+it("doesn't lose our place in the tree if we collapse and reopen it", async () => {
+  renderWithProviders(<App />);
+  expect(screen.getByRole('treeitem', { name: 'Films' })).toBeInTheDocument();
+
+  // Open the tree two levels
+  await user.click(screen.getByRole('treeitem', { name: 'Films' }));
+  Films.forEach(({ name }) => {
+    expect(screen.getByRole('treeitem', { name })).toBeInTheDocument();
+  });
+  await user.click(screen.getByRole('treeitem', { name: 'OfficeSpace' }));
+  OfficeSpace.forEach(({ name }) => {
+    expect(screen.getByRole('treeitem', { name })).toBeInTheDocument();
+  });
+
+  // Close the tree at the highest level
+  await user.click(screen.getByRole('treeitem', { name: 'Films' }));
+  expect(
+    screen.queryByRole('treeitem', { name: Films[0].name }),
+  ).not.toBeVisible();
+
+  // Open the tree again
+  await user.click(screen.getByRole('treeitem', { name: 'Films' }));
+
+  expect(
+    screen.getByRole('treeitem', { name: 'OfficeSpace.mkv' }),
+  ).toBeVisible();
+});
