@@ -1,7 +1,6 @@
 import { Suspense, createContext, useContext, useState } from 'react';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { compact } from 'lodash';
 
 const API_ROOT: string = import.meta.env.VITE_API_ROOT;
 const MEDIA_ROOT: string = import.meta.env.VITE_MEDIA_ROOT;
