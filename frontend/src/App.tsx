@@ -1,6 +1,7 @@
 import { Suspense, createContext, useContext, useState } from 'react';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { compact } from 'lodash';
 
 const API_ROOT: string = import.meta.env.VITE_API_ROOT;
 const MEDIA_ROOT: string = import.meta.env.VITE_MEDIA_ROOT;
@@ -127,13 +128,14 @@ function MenuItemChildren({
   isTopLevel?: boolean;
   hidden?: boolean;
 }) {
-  const className =
-    [isTopLevel ? '' : 'ml-5', hidden ? 'hidden' : ''].join(' ') || undefined;
   return (
     <>
       {data.map((item) => (
         <div
-          className={className}
+          className={
+            compact([!isTopLevel && 'ml-5', hidden && 'hidden']).join(' ') ||
+            undefined
+          }
           key={item.url}
         >
           <Suspense
