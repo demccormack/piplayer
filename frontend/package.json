@@ -31,7 +31,7 @@
     "autoprefixer": "^10.4.13",
     "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.7.0",
-    "jsdom": "^21.1.1",
+    "happy-dom": "^9.18.3",
     "postcss": "^8.4.21",
     "prettier": "^2.8.4",
     "prettier-plugin-tailwindcss": "^0.2.2",
