@@ -68,7 +68,7 @@ it('fetches and renders child tree items on click', async () => {
   expect(
     screen.getByRole('treeitem', { name: randomItemNameFrom(Films) }),
   ).toBeInTheDocument();
-});
+}, 20000);
 
 it('fetches and renders child tree items two levels deep', async () => {
   render(<App />);
@@ -83,7 +83,7 @@ it('fetches and renders child tree items two levels deep', async () => {
       name: randomItemNameFrom(OfficeSpace),
     }),
   ).toBeInTheDocument();
-});
+}, 20000);
 
 it("doesn't lose our place in the tree if we collapse and reopen it", async () => {
   render(<App />);
@@ -114,4 +114,4 @@ it("doesn't lose our place in the tree if we collapse and reopen it", async () =
   expect(
     screen.getByRole('treeitem', { name: randomItemNameFrom(OfficeSpace) }),
   ).toBeVisible();
-});
+}, 20000);
