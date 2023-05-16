@@ -132,11 +132,9 @@ function MenuItemChildren({
     <>
       {data.map((item) => (
         <div
-          className={
-            compact([!isTopLevel && 'ml-5', hidden && 'hidden']).join(' ') ||
-            undefined
-          }
+          className={(!isTopLevel && 'ml-5') || undefined}
           key={item.url}
+          hidden={hidden}
         >
           <Suspense
             fallback={
