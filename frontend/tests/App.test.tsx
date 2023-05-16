@@ -101,6 +101,12 @@ it("doesn't lose our place in the tree if we collapse and reopen it", async () =
 
   // Close the tree at the highest level
   await user.click(screen.getByRole('treeitem', { name: 'Films' }));
+  expect(
+    screen.getByRole('treeitem', {
+      name: randomItemNameFrom(OfficeSpace),
+      hidden: true,
+    }),
+  ).not.toBeVisible();
 
   // Open the tree again
   await user.click(screen.getByRole('treeitem', { name: 'Films' }));
