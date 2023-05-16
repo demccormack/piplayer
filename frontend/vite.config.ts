@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
-    environment: 'jsdom',
+    environment: 'happy-dom',
     setupFiles: './vitest.setup.ts',
     includeSource: ['src/**/*.{js,ts,jsx,tsx}'],
   },
