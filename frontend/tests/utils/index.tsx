@@ -1,8 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MediaItem, QueryContext } from '../../src/App';
-import TestQueryContextValue from '../mocks/TestQueryContextValue';
 import { ReactElement } from 'react';
 import { RenderOptions, render } from '@testing-library/react';
+import { queryFn } from '../mocks';
 
 const randomItemNameFrom = (array: MediaItem[]) =>
   array[Math.floor(Math.random() * array.length)].name;
@@ -11,7 +11,7 @@ const queryClient = new QueryClient();
 
 const wrapper = ({ children }: { children: React.ReactNode }) => {
   return (
-    <QueryContext.Provider value={TestQueryContextValue}>
+    <QueryContext.Provider value={{ queryFn }}>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </QueryContext.Provider>
   );
