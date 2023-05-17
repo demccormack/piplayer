@@ -90,6 +90,7 @@ function MenuItem({
   }: UseQueryResult<{ data: MediaItem[] }> = useQuery({
     queryKey: ['media', item.url],
     queryFn: () => queryFn(API_ROOT, { params: { dir: item.url } }),
+    useErrorBoundary: false,
     enabled: expanded,
   });
 
