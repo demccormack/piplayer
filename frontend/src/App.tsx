@@ -132,7 +132,7 @@ function MenuItemChildren({
     <>
       {data.map((item) => (
         <div
-          className={(!isTopLevel && 'ml-5') || undefined}
+          className={isTopLevel ? undefined : 'ml-5'}
           key={item.url}
           hidden={hidden}
         >
