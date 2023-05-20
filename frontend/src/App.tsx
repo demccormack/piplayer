@@ -5,13 +5,14 @@ import axios, { AxiosError } from 'axios';
 const API_ROOT: string = import.meta.env.VITE_API_ROOT;
 const MEDIA_ROOT: string = import.meta.env.VITE_MEDIA_ROOT;
 
-export const queryFn: (
+export type queryFnType = (
   url: string,
   {
     params: { dir },
   }: { params: { dir: string } },
-) => Promise<{ data: MediaItem[] | AxiosError }> = (url, config) =>
-  axios.get(url, config);
+) => Promise<{ data: MediaItem[] | AxiosError }>;
+
+export const queryFn: queryFnType = (url, config) => axios.get(url, config);
 
 export const QueryContext = createContext({ queryFn });
 

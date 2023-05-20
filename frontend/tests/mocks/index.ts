@@ -1,18 +1,9 @@
 import top from './top';
 import Films from './Films';
 import OfficeSpace from './OfficeSpace';
-import { MediaItem } from '../../src/App';
-import { AxiosError } from 'axios';
+import { queryFnType } from '../../src/App';
 
-const queryFn: (
-  url: string,
-  {
-    params: { dir },
-  }: { params: { dir: string } },
-) => Promise<{ data: MediaItem[] | AxiosError }> = async (
-  _API_ROOT,
-  { params: { dir } },
-) => {
+const queryFn: queryFnType = async (_API_ROOT, { params: { dir } }) => {
   const data =
     dir === ''
       ? top
