@@ -87,6 +87,7 @@ function MenuItem({
       ? useQuery({
           queryKey: ['media', item.url],
           queryFn: () => queryFn(API_ROOT, { params: { dir: item.url } }),
+          staleTime: 300_000,
           useErrorBoundary: false,
           enabled: expanded,
         })

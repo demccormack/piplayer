@@ -1,10 +1,12 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import App from '../src/App';
 import Films from './mocks/Films';
 import OfficeSpace from './mocks/OfficeSpace';
 import top from './mocks/top';
 import { randomItemNameFrom, render } from './utils';
+import { queryFn as mockQueryFn } from './mocks';
 
 const user = userEvent.setup();
 
@@ -114,4 +116,39 @@ it("doesn't lose our place in the tree if we collapse and reopen it", async () =
   expect(
     screen.getByRole('treeitem', { name: randomItemNameFrom(OfficeSpace) }),
   ).toBeVisible();
+});
+
+it("doesn't try to fetch data it already has", async () => {
+  const queryFn = vi.fn(mockQueryFn);
+  // Initial fetch of top-level data
+  render(<App />, { queryFn });
+
+  // Data for Films fetched here
+  await user.click(screen.getByRole('treeitem', { name: 'Films' }));
+  expect(
+    screen.getByRole('treeitem', {
+      name: randomItemNameFrom(Films),
+      hidden: true,
+    }),
+  ).toBeVisible();
+
+  // Films toggled, contents are now hidden
+  await user.click(screen.getByRole('treeitem', { name: 'Films' }));
+  expect(
+    screen.getByRole('treeitem', {
+      name: randomItemNameFrom(Films),
+      hidden: true,
+    }),
+  ).not.toBeVisible();
+
+  // No need to fetch again
+  await user.click(screen.getByRole('treeitem', { name: 'Films' }));
+  expect(
+    screen.getByRole('treeitem', {
+      name: randomItemNameFrom(Films),
+      hidden: true,
+    }),
+  ).toBeVisible();
+
+  expect(queryFn).toHaveBeenCalledTimes(2);
 });
