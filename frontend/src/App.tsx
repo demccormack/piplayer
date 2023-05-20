@@ -81,12 +81,15 @@ function MenuItem({
 
   const {
     data: { data } = { data: [] },
-  }: UseQueryResult<{ data: MediaItem[] }> = useQuery({
-    queryKey: ['media', item.url],
-    queryFn: () => queryFn(API_ROOT, { params: { dir: item.url } }),
-    useErrorBoundary: false,
-    enabled: expanded,
-  });
+  }: UseQueryResult<{ data: MediaItem[] }> | { data: { data: MediaItem[] } } =
+    item.type === 'directory'
+      ? useQuery({
+          queryKey: ['media', item.url],
+          queryFn: () => queryFn(API_ROOT, { params: { dir: item.url } }),
+          useErrorBoundary: false,
+          enabled: expanded,
+        })
+      : { data: { data: [] } };
 
   return isTopLevel ? (
     <MenuItemChildren
