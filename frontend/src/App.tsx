@@ -1,25 +1,19 @@
 import { Suspense, createContext, useContext, useState } from 'react';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 const API_ROOT: string = import.meta.env.VITE_API_ROOT;
 const MEDIA_ROOT: string = import.meta.env.VITE_MEDIA_ROOT;
 
-export interface QueryContextType {
-  queryFn: (
-    API_ROOT: string,
-    {
-      params: { dir },
-    }: { params: { dir: string } },
-  ) => Promise<{ data: MediaItem[] | string }>;
-}
+export const queryFn: (
+  url: string,
+  {
+    params: { dir },
+  }: { params: { dir: string } },
+) => Promise<{ data: MediaItem[] | AxiosError }> = (url, config) =>
+  axios.get(url, config);
 
-export const AppQueryContextValue: QueryContextType = {
-  queryFn: (arg1, arg2) => axios.get(arg1, arg2),
-};
-
-export const QueryContext =
-  createContext<QueryContextType>(AppQueryContextValue);
+export const QueryContext = createContext({ queryFn });
 
 function App() {
   const [videoSource, setVideoSource] = useState('welcome');

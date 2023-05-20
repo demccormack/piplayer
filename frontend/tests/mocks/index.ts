@@ -2,13 +2,14 @@ import top from './top';
 import Films from './Films';
 import OfficeSpace from './OfficeSpace';
 import { MediaItem } from '../../src/App';
+import { AxiosError } from 'axios';
 
 const queryFn: (
-  API_ROOT: string,
+  url: string,
   {
     params: { dir },
   }: { params: { dir: string } },
-) => Promise<{ data: MediaItem[] | string }> = async (
+) => Promise<{ data: MediaItem[] | AxiosError }> = async (
   _API_ROOT,
   { params: { dir } },
 ) => {
