@@ -5,16 +5,22 @@ import axios, { AxiosError } from 'axios';
 const API_ROOT: string = import.meta.env.VITE_API_ROOT;
 const MEDIA_ROOT: string = import.meta.env.VITE_MEDIA_ROOT;
 
-export type queryFnType = (
+interface MediaItem {
+  name: string;
+  type: 'directory' | 'file';
+  url: string;
+}
+
+type queryFnType = (
   url: string,
   {
     params: { dir },
   }: { params: { dir: string } },
 ) => Promise<{ data: MediaItem[] | AxiosError }>;
 
-export const queryFn: queryFnType = (url, config) => axios.get(url, config);
+const queryFn: queryFnType = (url, config) => axios.get(url, config);
 
-export const QueryContext = createContext({ queryFn });
+const QueryContext = createContext({ queryFn });
 
 function App() {
   const [videoSource, setVideoSource] = useState('welcome');
@@ -60,12 +66,6 @@ function SideBar({
       </menu>
     </nav>
   );
-}
-
-export interface MediaItem {
-  name: string;
-  type: 'directory' | 'file';
-  url: string;
 }
 
 function MenuItem({
@@ -196,5 +196,9 @@ function MenuItemHeader({
     </>
   );
 }
+
+export type { MediaItem, queryFnType };
+
+export { queryFn, QueryContext };
 
 export default App;
