@@ -56,16 +56,18 @@ it('loads media from source specified in environment variables', () => {
   ).toMatch(new RegExp(`^${MEDIA_ROOT}`));
 });
 
-it('renders tree items', () => {
+it('renders tree items', async () => {
   render(<App />);
   expect(
-    screen.getByRole('treeitem', { name: randomItemNameFrom(top) }),
+    await screen.findByRole('treeitem', { name: randomItemNameFrom(top) }),
   ).toBeInTheDocument();
 });
 
 it('fetches and renders child tree items on click', async () => {
   render(<App />);
-  expect(screen.getByRole('treeitem', { name: 'Films' })).toBeInTheDocument();
+  expect(
+    await screen.findByRole('treeitem', { name: 'Films' }),
+  ).toBeInTheDocument();
   await user.click(screen.getByRole('treeitem', { name: 'Films' }));
   expect(
     screen.getByRole('treeitem', { name: randomItemNameFrom(Films) }),
@@ -74,7 +76,10 @@ it('fetches and renders child tree items on click', async () => {
 
 it('fetches and renders child tree items two levels deep', async () => {
   render(<App />);
-  expect(screen.getByRole('treeitem', { name: 'Films' })).toBeInTheDocument();
+  expect(
+    await screen.findByRole('treeitem', { name: 'Films' }),
+  ).toBeInTheDocument();
+
   await user.click(screen.getByRole('treeitem', { name: 'Films' }));
   expect(
     screen.getByRole('treeitem', { name: randomItemNameFrom(Films) }),
@@ -89,7 +94,9 @@ it('fetches and renders child tree items two levels deep', async () => {
 
 it("doesn't lose our place in the tree if we collapse and reopen it", async () => {
   render(<App />);
-  expect(screen.getByRole('treeitem', { name: 'Films' })).toBeInTheDocument();
+  expect(
+    await screen.findByRole('treeitem', { name: 'Films' }),
+  ).toBeInTheDocument();
 
   // Open the tree two levels
   await user.click(screen.getByRole('treeitem', { name: 'Films' }));
@@ -124,7 +131,7 @@ it("doesn't try to fetch data it already has", async () => {
   render(<App />, { queryFn });
 
   // Data for Films fetched here
-  await user.click(screen.getByRole('treeitem', { name: 'Films' }));
+  await user.click(await screen.findByRole('treeitem', { name: 'Films' }));
   expect(
     screen.getByRole('treeitem', {
       name: randomItemNameFrom(Films),
