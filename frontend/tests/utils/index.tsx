@@ -30,6 +30,7 @@ const customRender = (
     queryFn: mockQueryFn,
   },
 ) => {
+  expect(document.body).toBeEmptyDOMElement();
   const wrapper = wrapperWith(queryFn);
   return render(ui, { wrapper, ...options });
 };
