@@ -7,14 +7,12 @@ import { queryFn as mockQueryFn } from '../mocks';
 const randomItemNameFrom = (array: MediaItem[]) =>
   array[Math.floor(Math.random() * array.length)].name;
 
-const queryClient = new QueryClient();
-
 const wrapperWith =
   (queryFn: queryFnType) =>
   ({ children }: { children: React.ReactNode }) => {
     return (
       <QueryContext.Provider value={{ queryFn }}>
-        <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={new QueryClient()}>
           {children}
         </QueryClientProvider>
       </QueryContext.Provider>
