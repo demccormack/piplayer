@@ -12,7 +12,10 @@ module.exports = {
         'plugin:@typescript-eslint/strict',
         'prettier',
       ],
-      rules: { '@typescript-eslint/no-non-null-assertion': 'off' },
+      rules: {
+        '@typescript-eslint/no-non-null-assertion': 'off',
+        'no-console': 'error',
+      },
       parserOptions: {
         project: true,
         tsconfigRootDir: __dirname,
