@@ -21,9 +21,10 @@ jobs:
         run: cd frontend && npm ci
 
       - name: Run linters
-        uses: wearerequired/lint-action@v2
+        uses: wearerequired/lint-action@v2.3.0
         with:
           eslint: true
-          prettier: true
           eslint_dir: frontend/
+          eslint_extensions: js,jsx,ts,tsx
+          prettier: true
           prettier_dir: frontend/
