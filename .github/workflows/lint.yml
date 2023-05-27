@@ -1,11 +1,11 @@
 name: Lint
 
-on: push
+on: [push, pull_request]
 
-# Down scope as necessary via https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
 permissions:
   checks: write
-  contents: write
+  contents: read
+  pull-requests: read
 
 jobs:
   run-linters:
@@ -16,7 +16,6 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v2
 
-      # Install your linters here
       - name: Install Node.js dependencies
         run: cd frontend && npm ci
 
