@@ -79,7 +79,6 @@ function MenuItem({
 }) {
   const [expanded, setExpanded] = useState(isTopLevel);
   const { queryFn } = useContext(QueryContext);
-  console.log(item);
 
   const {
     data: { data } = { data: [] },
