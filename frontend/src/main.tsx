@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import App, { queryFn, QueryContext } from './App';
 import './index.css';
+import { worker } from '../tests/mocks/browser';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -12,6 +13,10 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+if (process.env.NODE_ENV === 'development') {
+  void worker.start();
+}
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
