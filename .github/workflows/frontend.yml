@@ -1,4 +1,4 @@
-name: Lint
+name: Frontend
 
 on: [push, pull_request]
 
@@ -8,8 +8,8 @@ permissions:
   pull-requests: read
 
 jobs:
-  run-linters:
-    name: Run linters
+  test-lint-and-format:
+    name: Test lint and format
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +19,10 @@ jobs:
       - name: Install Node.js dependencies
         run: cd frontend && npm ci
 
-      - name: Run linters
+      - name: Run tests
+        run: npx vitest --run
+
+      - name: Lint and format
         uses: wearerequired/lint-action@v2.3.0
         with:
           eslint: true
