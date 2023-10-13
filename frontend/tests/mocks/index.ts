@@ -1,9 +1,10 @@
+import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import top from './top';
 import Films from './Films';
 import OfficeSpace from './OfficeSpace';
 
-export const handlers = [
+const handlers = [
   rest.get(import.meta.env.VITE_API_ROOT, (req, res, ctx) => {
     const dir = req.url.searchParams.get('dir');
 
@@ -34,3 +35,7 @@ export const handlers = [
     return res(ctx.status(204));
   }),
 ];
+
+const server = setupServer(...handlers);
+
+export { handlers, server };
