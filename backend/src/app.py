@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 import sys
 from os import environ, listdir, path
 from urllib.parse import quote, unquote
@@ -7,27 +8,35 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
-CORS(app, origins=environ['CORS_ORIGINS'].split())
+CORS(app, origins=environ["CORS_ORIGINS"].split())
 
-mediaRoot = environ['MEDIA']
+mediaRoot = environ["MEDIA"]
 
-@app.route('/', methods=['GET'])
+
+@app.route("/", methods=["GET"])
 def get_films():
-    dir = unquote(request.args.get('dir'))
+    dir = unquote(request.args.get("dir"))
     dirPath = path.join(mediaRoot, dir)
     return jsonify(filmTree(dirPath))
+
 
 def filmTree(dir):
     ls = sorted(listdir(dir))
     result = []
     for item in ls:
         fullPath = path.join(dir, item)
-        url = quote(fullPath[len(mediaRoot):])
-        result.append({'name': item, 'type': 'directory' if path.isdir(fullPath) else 'file', 'url': url})
+        url = quote(fullPath[len(mediaRoot) :])
+        result.append(
+            {
+                "name": item,
+                "type": "directory" if path.isdir(fullPath) else "file",
+                "url": url,
+            }
+        )
     return result
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cli_args = sys.argv[1:]
 
     # If the IP and port are supplied as arguments, use them.
