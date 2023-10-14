@@ -8,7 +8,7 @@ permissions:
   pull-requests: read
 
 jobs:
-  test-lint-and-format:
+  frontend:
     name: Frontend test, lint and format
     runs-on: ubuntu-latest
 
