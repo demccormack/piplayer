@@ -22,7 +22,14 @@ jobs:
           set -x
           cd backend
           CORS_ORIGINS='' MEDIA=.. flask --app src/app.py run &
-          while [[ -z "${DIR_LIST:-}" ]]; do DIR_LIST=$(curl 'http://127.0.0.1:5000/?dir=' || true); done
+
+          TRIES=0
+          while [[ -z "${DIR_LIST:-}" ]] && [[ "$TRIES" -le 120 ]]
+          do
+            DIR_LIST=$(curl 'http://127.0.0.1:5000/?dir=' || true)
+            ((++TRIES))
+            sleep 0.5
+          done
 
           echo "$DIR_LIST" | grep '{"name":".gitignore","type":"file","url":"/.gitignore"}'
           echo "$DIR_LIST" | grep '{"name":"backend","type":"directory","url":"/backend"}'
