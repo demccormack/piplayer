@@ -1,0 +1,36 @@
+name: Backend
+
+on: [push, pull_request]
+
+jobs:
+  backend:
+    name: Backend test, lint and format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.11
+      - name: Install dependencies
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: End-to-end test
+        run: |
+          set -x
+          cd backend
+          CORS_ORIGINS='' MEDIA=.. flask --app src/app.py run &
+          while [[ -z "${DIR_LIST:-}" ]]; do DIR_LIST=$(curl 'http://127.0.0.1:5000/?dir=' || true); done
+
+          echo "$DIR_LIST" | grep '{"name":".gitignore","type":"file","url":"/.gitignore"}'
+          echo "$DIR_LIST" | grep '{"name":"backend","type":"directory","url":"/backend"}'
+      - name: Lint
+        run: |
+          cd backend
+          pylint $(git ls-files '*.py')
+      - name: Format
+        run: |
+          cd backend
+          black . --check
