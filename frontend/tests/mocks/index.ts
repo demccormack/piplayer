@@ -1,85 +1,41 @@
+import { setupServer } from 'msw/node';
+import { rest } from 'msw';
 import top from './top';
 import Films from './Films';
 import OfficeSpace from './OfficeSpace';
-import { queryFnType } from '../../src/App';
 
-const queryFn: queryFnType = async (_API_ROOT, { params: { dir } }) => {
-  const data =
-    dir === ''
-      ? top
-      : dir === 'Films'
-      ? Films
-      : dir === 'Films/OfficeSpace'
-      ? OfficeSpace
-      : undefined;
+const handlers = [
+  rest.get(import.meta.env.VITE_API_ROOT, (req, res, ctx) => {
+    const dir = req.url.searchParams.get('dir');
 
-  return data
-    ? await Promise.resolve({ data })
-    : await Promise.reject({
-        message: 'Request failed with status code 500',
-        name: 'AxiosError',
-        stack:
-          'AxiosError: Request failed with status code 500\n    at settle (http://localhost:3000/node_modules/.vite/deps/axios.js?v=429e27c8:1185:12)\n    at XMLHttpRequest.onloadend (http://localhost:3000/node_modules/.vite/deps/axios.js?v=429e27c8:1409:7)',
-        config: {
-          transitional: {
-            silentJSONParsing: true,
-            forcedJSONParsing: true,
-            clarifyTimeoutError: false,
-          },
-          adapter: ['xhr', 'http'],
-          transformRequest: [null],
-          transformResponse: [null],
-          timeout: 0,
-          xsrfCookieName: 'XSRF-TOKEN',
-          xsrfHeaderName: 'X-XSRF-TOKEN',
-          maxContentLength: -1,
-          maxBodyLength: -1,
-          env: {},
-          headers: {
-            Accept: 'application/json, text/plain, */*',
-          },
-          params: {
-            dir,
-          },
-          method: 'get',
-          url: 'http://127.0.0.1:8080/',
-        },
-        code: 'ERR_BAD_RESPONSE',
-        status: 500,
-        response: {
-          data: '<!doctype html>\n<html lang=en>\n<title>500 Internal Server Error</title>\n<h1>Internal Server Error</h1>\n<p>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</p>\n',
-          status: 500,
-          statusText: 'INTERNAL SERVER ERROR',
-          headers: {
-            'content-length': '265',
-            'content-type': 'text/html; charset=utf-8',
-          },
-          config: {
-            transitional: {
-              silentJSONParsing: true,
-              forcedJSONParsing: true,
-              clarifyTimeoutError: false,
-            },
-            adapter: ['xhr', 'http'],
-            transformRequest: [null],
-            transformResponse: [null],
-            timeout: 0,
-            xsrfCookieName: 'XSRF-TOKEN',
-            xsrfHeaderName: 'X-XSRF-TOKEN',
-            maxContentLength: -1,
-            maxBodyLength: -1,
-            env: {},
-            headers: {
-              Accept: 'application/json, text/plain, */*',
-            },
-            params: {
-              dir,
-            },
-            method: 'get',
-            url: 'http://127.0.0.1:8080/',
-          },
-        },
-      });
-};
+    const data =
+      dir === ''
+        ? top
+        : dir === 'Films'
+        ? Films
+        : dir === 'Films/OfficeSpace'
+        ? OfficeSpace
+        : undefined;
 
-export { queryFn };
+    return data
+      ? res(ctx.status(200), ctx.json(data))
+      : res(
+          ctx.status(500),
+          ctx.set('Content-Type', 'text/html; charset=utf-8'),
+          ctx.body(`
+<!doctype html>
+<html lang=en>
+<title>500 Internal Server Error</title>
+<h1>Internal Server Error</h1>
+<p>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</p>
+          `),
+        );
+  }),
+  rest.get(`${import.meta.env.VITE_MEDIA_ROOT}welcome`, (req, res, ctx) => {
+    return res(ctx.status(204));
+  }),
+];
+
+const server = setupServer(...handlers);
+
+export { handlers, server };

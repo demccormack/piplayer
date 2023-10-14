@@ -6,7 +6,7 @@ import Films from './mocks/Films';
 import OfficeSpace from './mocks/OfficeSpace';
 import top from './mocks/top';
 import { randomItemNameFrom, render } from './utils';
-import { queryFn as mockQueryFn } from './mocks';
+import axios from 'axios';
 
 const user = userEvent.setup();
 
@@ -126,9 +126,9 @@ it("doesn't lose our place in the tree if we collapse and reopen it", async () =
 });
 
 it("doesn't try to fetch data it already has", async () => {
-  const queryFn = vi.fn(mockQueryFn);
+  const queryFn = vi.spyOn(axios, 'get');
   // Initial fetch of top-level data
-  render(<App />, { queryFn });
+  render(<App />);
 
   // Data for Films fetched here
   await user.click(await screen.findByRole('treeitem', { name: 'Films' }));
