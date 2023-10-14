@@ -28,7 +28,9 @@ jobs:
           echo "$DIR_LIST" | grep '{"name":"backend","type":"directory","url":"/backend"}'
       - name: Lint
         run: |
+          cd backend
           pylint $(git ls-files '*.py')
       - name: Format
         run: |
+          cd backend
           black . --check
