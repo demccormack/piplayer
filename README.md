@@ -4,7 +4,7 @@ Pi Player is a media player web app with a cinema-style interface and movie sele
 
 ### Running with Docker
 
-You can use Docker to run the application from Linux, MacOS or Windows. 
+You can use Docker to run the application from Linux, MacOS or Windows.
 You must have both Docker and Docker-Compose installed.
 
 1. Edit `.env.development`, setting the `MEDIA` environment variable to a directory containing media files for the application to read.
@@ -20,13 +20,14 @@ Then you can browse to http://localhost:3000/, view and play the video and music
 
 ```bash
 .
-├── backend             # Codebase for the backend server.
-│   ├── app.py          # Entry-point of the backend server.
-│   └── ...
-|  
-├── frontend            # Codebase for the frontend.
-│   ├── index.html      # Placeholder HTML file.
-│   ├── piplayer.js     # Entry-point of the frontend.
+├── backend             # Backend server written in Python with Flask
+│   ├── src
+│       └── app.py      # Entry-point
+|
+├── frontend            # Frontend written in TypeScript with React
+│   ├── src
+│   |   └── main.tsx    # Entry-point
+│   ├── tests
 │   └── ...
 |
 ├── docker              # Files used to create Docker images.
