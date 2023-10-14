@@ -10,43 +10,50 @@ app = Flask(__name__)
 
 CORS(app, origins=environ["CORS_ORIGINS"].split())
 
-mediaRoot = environ["MEDIA"]
+MEDIA_ROOT = environ["MEDIA"]
 
 
 @app.route("/", methods=["GET"])
-def get_films():
-    dir = unquote(request.args.get("dir"))
-    dirPath = path.join(mediaRoot, dir)
-    return jsonify(filmTree(dirPath))
+def get_files():
+    """
+    Returns the contents of the requested directory in JSON form.
+    """
+    dir_name = unquote(request.args.get("dir"))
+    dir_path = path.join(MEDIA_ROOT, dir_name)
+    return jsonify(contents(dir_path))
 
 
-def filmTree(dir):
-    ls = sorted(listdir(dir))
+def contents(directory):
+    """
+    Returns the contents of the requested directory as an array of dictionaries.
+    """
+    sorted_list = sorted(listdir(directory))
     result = []
-    for item in ls:
-        fullPath = path.join(dir, item)
-        url = quote(fullPath[len(mediaRoot) :])
+
+    for item in sorted_list:
+        full_path = path.join(directory, item)
+        url = quote(full_path[len(MEDIA_ROOT) :])
         result.append(
             {
                 "name": item,
-                "type": "directory" if path.isdir(fullPath) else "file",
+                "type": "directory" if path.isdir(full_path) else "file",
                 "url": url,
             }
         )
+
     return result
 
 
 if __name__ == "__main__":
     cli_args = sys.argv[1:]
 
-    # If the IP and port are supplied as arguments, use them.
     if cli_args:
-        host = cli_args[0]
+        HOST = cli_args[0]
         if len(cli_args) > 1:
-            port = cli_args[1]
+            PORT = cli_args[1]
         else:
-            port = 8080
+            PORT = 8080
     else:
-        host = "127.0.0.1"
+        HOST = "127.0.0.1"
 
-    app.run(host=host, port=port, debug=True)
+    app.run(host=HOST, port=PORT, debug=True)
