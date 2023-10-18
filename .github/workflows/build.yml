@@ -25,6 +25,10 @@ jobs:
           while [[ -z "${DIR_LIST:-}" ]] && [[ "$TRIES" -le 120 ]]
           do
             DIR_LIST=$(curl 'http://127.0.0.1:8080/?dir=' || true)
+            if grep 404 <<< "$DIR_LIST"
+            then
+              DIR_LIST=''
+            fi
             ((++TRIES))
             sleep 0.5
           done
