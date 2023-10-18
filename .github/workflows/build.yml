@@ -12,7 +12,7 @@ jobs:
         run: |
           echo 'VITE_API_ROOT=http://127.0.0.1:8080/' >> .env.production
           echo 'VITE_MEDIA_ROOT=http://127.0.0.1:8080/' >> .env.production
-          echo 'MEDIA=/app/' >> .env.production
+          echo "MEDIA=$GITHUB_WORKSPACE" >> .env.production
 
       - name: Deploy to Docker containers on localhost
         run: |
