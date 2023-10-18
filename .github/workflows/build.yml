@@ -1,0 +1,34 @@
+name: Dry Run Deployment
+
+on: [push]
+
+jobs:
+  dry-run-deployment:
+    name: Dry Run Deployment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Override environment variables
+        run: |
+          echo 'VITE_API_ROOT=http://127.0.0.1:8080/' >> .env.production
+          echo 'VITE_MEDIA_ROOT=http://127.0.0.1:8080/' >> .env.production
+          echo 'MEDIA=/app/' >> .env.production
+
+      - name: Deploy to Docker containers on localhost
+        run: |
+          bash ./build_and_run.sh .env.production
+
+      - name: Integration test
+        run: |
+          set -x
+          TRIES=0
+          while [[ -z "${DIR_LIST:-}" ]] && [[ "$TRIES" -le 120 ]]
+          do
+            DIR_LIST=$(curl 'http://127.0.0.1:8080/?dir=' || true)
+            ((++TRIES))
+            sleep 0.5
+          done
+
+          echo "$DIR_LIST" | grep '{"name":".gitignore","type":"file","url":"/.gitignore"}'
+          echo "$DIR_LIST" | grep '{"name":"backend","type":"directory","url":"/backend"}'
+          curl http://127.0.0.1/ | grep 'Pi Player'
