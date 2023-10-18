@@ -25,14 +25,12 @@ jobs:
           while [[ -z "${DIR_LIST:-}" ]] && [[ "$TRIES" -le 120 ]]
           do
             DIR_LIST=$(curl 'http://127.0.0.1:8080/?dir=' || true)
-            if grep 404 <<< "$DIR_LIST"
-            then
-              DIR_LIST=''
-            fi
             ((++TRIES))
             sleep 0.5
           done
 
-          echo "$DIR_LIST" | grep '{"name":".gitignore","type":"file","url":"/.gitignore"}'
-          echo "$DIR_LIST" | grep '{"name":"backend","type":"directory","url":"/backend"}'
-          curl http://127.0.0.1/ | grep 'Pi Player'
+          grep '{"name":".gitignore","type":"file","url":"/.gitignore"}' <<< "$DIR_LIST"
+          grep '{"name":"backend","type":"directory","url":"/backend"}' <<< "$DIR_LIST"
+
+          HTML=$(curl http://127.0.0.1/)
+          grep 'Pi Player' <<< "$HTML"
