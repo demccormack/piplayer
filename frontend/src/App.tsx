@@ -70,16 +70,13 @@ function MenuItem({
 
   const {
     data: { data } = { data: [] },
-  }: UseQueryResult<{ data: MediaItem[] }> | { data: { data: MediaItem[] } } =
-    item.type === 'directory'
-      ? useQuery({
-          queryKey: ['media', item.url],
-          queryFn: () => axios.get(API_ROOT, { params: { dir: item.url } }),
-          staleTime: 300_000,
-          useErrorBoundary: false,
-          enabled: expanded,
-        })
-      : { data: { data: [] } };
+  }: UseQueryResult<{ data: MediaItem[] }> = useQuery({
+    queryKey: ['media', item.url],
+    queryFn: () => axios.get(API_ROOT, { params: { dir: item.url } }),
+    staleTime: 300_000,
+    useErrorBoundary: false,
+    enabled: expanded && item.type === 'directory',
+  });
 
   return (
     <>
