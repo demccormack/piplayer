@@ -81,23 +81,20 @@ function MenuItem({
         })
       : { data: { data: [] } };
 
-  return isTopLevel ? (
-    <MenuItemChildren
-      data={data}
-      setVideoSource={setVideoSource}
-      isTopLevel
-    />
-  ) : (
+  return (
     <>
-      <MenuItemHeader
-        item={item}
-        expanded={expanded}
-        setExpanded={setExpanded}
-        setVideoSource={setVideoSource}
-      />
+      {!isTopLevel && (
+        <MenuItemHeader
+          item={item}
+          expanded={expanded}
+          setExpanded={setExpanded}
+          setVideoSource={setVideoSource}
+        />
+      )}
       <MenuItemChildren
         data={data}
         setVideoSource={setVideoSource}
+        isTopLevel={isTopLevel}
         hidden={!expanded}
       />
     </>
