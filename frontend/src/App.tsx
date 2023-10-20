@@ -125,13 +125,10 @@ function MenuItemChildren({
         >
           <Suspense
             fallback={
-              <>
-                <MenuItemHeader
-                  item={item}
-                  expanded
-                />
-                ...
-              </>
+              <MenuItemHeader
+                item={{ ...item, name: `${item.name}...` }}
+                expanded
+              />
             }
           >
             <MenuItem
