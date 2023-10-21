@@ -16,7 +16,10 @@ function App() {
   return (
     <div className="h-screen text-gray-400">
       <MainPanel videoSource={videoSource} />
-      <SideBar setVideoSource={setVideoSource} />
+      <SideBar
+        setVideoSource={setVideoSource}
+        videoSource={videoSource}
+      />
     </div>
   );
 }
@@ -39,8 +42,10 @@ function MainPanel({ videoSource }: { videoSource: string }) {
 
 function SideBar({
   setVideoSource,
+  videoSource,
 }: {
   setVideoSource: React.Dispatch<React.SetStateAction<string>>;
+  videoSource: string;
 }) {
   return (
     <nav className="fixed left-0 top-0 h-screen w-1/4 resize-x overflow-auto whitespace-nowrap border-r-4 border-gray-400 px-2 py-1">
@@ -49,6 +54,7 @@ function SideBar({
           <MenuItem
             item={{ name: 'top', type: 'directory', url: '' }}
             setVideoSource={setVideoSource}
+            videoSource={videoSource}
             isTopLevel
           />
         </Suspense>
@@ -60,10 +66,12 @@ function SideBar({
 function MenuItem({
   item,
   setVideoSource,
+  videoSource,
   isTopLevel = false,
 }: {
   item: MediaItem;
   setVideoSource: React.Dispatch<React.SetStateAction<string>>;
+  videoSource: string;
   isTopLevel?: boolean;
 }) {
   const [expanded, setExpanded] = useState(isTopLevel);
@@ -86,11 +94,13 @@ function MenuItem({
           expanded={expanded}
           setExpanded={setExpanded}
           setVideoSource={setVideoSource}
+          videoSource={videoSource}
         />
       )}
       <MenuItemChildren
         data={data}
         setVideoSource={setVideoSource}
+        videoSource={videoSource}
         isTopLevel={isTopLevel}
         hidden={!expanded}
       />
@@ -101,11 +111,13 @@ function MenuItem({
 function MenuItemChildren({
   data,
   setVideoSource,
+  videoSource,
   isTopLevel,
   hidden,
 }: {
   data: MediaItem[];
   setVideoSource: React.Dispatch<React.SetStateAction<string>>;
+  videoSource: string;
   isTopLevel?: boolean;
   hidden?: boolean;
 }) {
@@ -121,6 +133,7 @@ function MenuItemChildren({
             fallback={
               <MenuItemHeader
                 item={{ ...item, name: `${item.name}...` }}
+                videoSource={videoSource}
                 expanded
               />
             }
@@ -128,6 +141,7 @@ function MenuItemChildren({
             <MenuItem
               item={item}
               setVideoSource={setVideoSource}
+              videoSource={videoSource}
             />
           </Suspense>
         </div>
@@ -141,11 +155,13 @@ function MenuItemHeader({
   expanded,
   setExpanded,
   setVideoSource,
+  videoSource,
 }: {
   item: MediaItem;
   expanded: boolean;
   setExpanded?: React.Dispatch<React.SetStateAction<boolean>>;
   setVideoSource?: React.Dispatch<React.SetStateAction<string>>;
+  videoSource: string;
 }) {
   return type === 'directory' ? (
     <label
@@ -162,8 +178,9 @@ function MenuItemHeader({
       {name}
     </label>
   ) : (
-    <label className="ml-2">
+    <label>
       <input
+        className="hidden"
         id={url}
         type="radio"
         role="treeitem"
@@ -171,6 +188,11 @@ function MenuItemHeader({
         value={url}
         onChange={() => setVideoSource?.(url)}
       />
+      <span
+        className={`inline-block ${
+          videoSource === url ? 'animate-bounce ' : ''
+        }before:content-['🎵']`}
+      ></span>
       {name}
     </label>
   );
