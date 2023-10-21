@@ -191,9 +191,9 @@ function MenuItemHeader({
       <span
         className={`inline-block ${
           videoSource === url ? 'animate-bounce ' : ''
-        }before:content-['🎵']`}
+        }before:content-['🔸']`}
       ></span>
-      {name}
+      {` ${name}`}
     </label>
   );
 }
