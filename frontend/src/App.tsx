@@ -148,7 +148,9 @@ function MenuItemHeader({
   setVideoSource?: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return type === 'directory' ? (
-    <>
+    <label
+      className={expanded ? "before:content-['⏷_']" : "before:content-['⏵_']"}
+    >
       <input
         className="hidden"
         id={url}
@@ -157,15 +159,10 @@ function MenuItemHeader({
         checked={expanded}
         onChange={() => setExpanded?.((prev) => !prev)}
       />
-      <label
-        htmlFor={url}
-        className={expanded ? "before:content-['⏷_']" : "before:content-['⏵_']"}
-      >
-        {name}
-      </label>
-    </>
+      {name}
+    </label>
   ) : (
-    <>
+    <label className="ml-2">
       <input
         id={url}
         type="radio"
@@ -174,13 +171,8 @@ function MenuItemHeader({
         value={url}
         onChange={() => setVideoSource?.(url)}
       />
-      <label
-        htmlFor={url}
-        className="ml-2"
-      >
-        {name}
-      </label>
-    </>
+      {name}
+    </label>
   );
 }
 
