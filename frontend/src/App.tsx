@@ -147,26 +147,33 @@ function MenuItemHeader({
   setExpanded?: React.Dispatch<React.SetStateAction<boolean>>;
   setVideoSource?: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  return (
+  return type === 'directory' ? (
     <>
-      {type === 'directory' ? (
-        <input
-          id={url}
-          type="checkbox"
-          role="treeitem"
-          checked={expanded}
-          onChange={() => setExpanded?.((prev) => !prev)}
-        />
-      ) : (
-        <input
-          id={url}
-          type="radio"
-          role="treeitem"
-          name="videoSource"
-          value={url}
-          onChange={() => setVideoSource?.(url)}
-        />
-      )}
+      <input
+        className="hidden"
+        id={url}
+        type="checkbox"
+        role="treeitem"
+        checked={expanded}
+        onChange={() => setExpanded?.((prev) => !prev)}
+      />
+      <label
+        htmlFor={url}
+        className={expanded ? "before:content-['⏷_']" : "before:content-['⏵_']"}
+      >
+        {name}
+      </label>
+    </>
+  ) : (
+    <>
+      <input
+        id={url}
+        type="radio"
+        role="treeitem"
+        name="videoSource"
+        value={url}
+        onChange={() => setVideoSource?.(url)}
+      />
       <label
         htmlFor={url}
         className="ml-2"
