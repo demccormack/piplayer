@@ -189,9 +189,11 @@ function MenuItemHeader({
         onChange={() => setVideoSource?.(url)}
       />
       <span
-        className={`inline-block ${
-          videoSource === url ? 'animate-bounce ' : ''
-        }before:content-['🔸']`}
+        className={
+          videoSource === url
+            ? "inline-block animate-bounce before:content-['🔸']"
+            : "inline-block before:content-['🔸']"
+        }
       ></span>
       {` ${name}`}
     </label>
