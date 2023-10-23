@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react';
+import { Suspense, useRef, useState } from 'react';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -18,12 +18,24 @@ function App() {
   const videoSource = queue[queuePosition];
 
   const addToQueue = (url: string) => setQueue((prev) => [...prev, url]);
-  const skipToNext = () => setQueuePosition((prev) => ++prev % queue.length);
+
+  const skipToPrevious = () =>
+    setQueuePosition((prev) => {
+      if (prev - 1 >= 0) {
+        return prev - 1;
+      } else {
+        return queue.length - 1;
+      }
+    });
+
+  const skipToNext = () =>
+    setQueuePosition((prev) => (prev + 1) % queue.length);
 
   return (
     <div className="h-screen text-gray-400">
       <MainPanel
         videoSource={videoSource}
+        skipToPrevious={skipToPrevious}
         skipToNext={skipToNext}
       />
       <SideBar
@@ -36,15 +48,31 @@ function App() {
 
 function MainPanel({
   videoSource,
+  skipToPrevious,
   skipToNext,
 }: {
   videoSource: string;
+  skipToPrevious: () => void;
   skipToNext: () => void;
 }) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const onPreviousClick = () => {
+    if (videoRef.current === null) return;
+    const currentTime = videoRef.current.currentTime;
+
+    if (currentTime < 5) {
+      skipToPrevious();
+    } else {
+      videoRef.current.currentTime = 0;
+    }
+  };
+
   return (
     <main className="fixed right-0 w-3/4 text-center">
       <h1 className="p-10 text-4xl font-bold">Pi Player</h1>
       <video
+        ref={videoRef}
         className="m-auto w-7/12 border-4 border-gray-400"
         src={`${MEDIA_ROOT}${videoSource}`}
         onEnded={skipToNext}
@@ -54,7 +82,10 @@ function MainPanel({
         Video should play here
       </video>
       <div className="flex justify-center gap-32 pt-10 text-6xl">
-        <button className="h-12 w-12 overflow-hidden rounded-full">
+        <button
+          className="h-12 w-12 overflow-hidden rounded-full"
+          onClick={onPreviousClick}
+        >
           <div className="-ml-2 -mt-1.5">⏪</div>
         </button>
         <button
