@@ -1,5 +1,5 @@
 astroid==3.0.1
-black==23.9.1
+black==23.10.1
 click==8.1.7
 dill==0.3.7
 Flask==3.0.0
