@@ -53,6 +53,17 @@ function MainPanel({
       >
         Video should play here
       </video>
+      <div className="flex justify-center gap-32 pt-10 text-6xl">
+        <button className="h-12 w-12 overflow-hidden rounded-full">
+          <div className="-ml-2 -mt-1.5">⏪</div>
+        </button>
+        <button
+          className="h-12 w-12 overflow-hidden rounded-full"
+          onClick={skipToNext}
+        >
+          <div className="-ml-1 -mt-1.5">⏩</div>
+        </button>
+      </div>
     </main>
   );
 }
