@@ -1,6 +1,7 @@
 import { Suspense, useRef, useState } from 'react';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import Queue from './components/Queue';
 
 const API_ROOT: string = import.meta.env.VITE_API_ROOT;
 const MEDIA_ROOT: string = import.meta.env.VITE_MEDIA_ROOT;
@@ -34,6 +35,8 @@ function App() {
   return (
     <div className="h-screen text-gray-400">
       <MainPanel
+        queue={queue}
+        queuePosition={queuePosition}
         videoSource={videoSource}
         skipToPrevious={skipToPrevious}
         skipToNext={skipToNext}
@@ -47,10 +50,14 @@ function App() {
 }
 
 function MainPanel({
+  queue,
+  queuePosition,
   videoSource,
   skipToPrevious,
   skipToNext,
 }: {
+  queue: string[];
+  queuePosition: number;
   videoSource: string;
   skipToPrevious: () => void;
   skipToNext: () => void;
@@ -95,6 +102,10 @@ function MainPanel({
           <div className="-ml-1 -mt-1.5">⏩</div>
         </button>
       </div>
+      <Queue
+        queue={queue}
+        queuePosition={queuePosition}
+      />
     </main>
   );
 }
