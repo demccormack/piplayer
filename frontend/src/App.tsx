@@ -37,6 +37,7 @@ function App() {
       <MainPanel
         queue={queue}
         queuePosition={queuePosition}
+        setQueuePosition={setQueuePosition}
         videoSource={videoSource}
         skipToPrevious={skipToPrevious}
         skipToNext={skipToNext}
@@ -52,12 +53,14 @@ function App() {
 function MainPanel({
   queue,
   queuePosition,
+  setQueuePosition,
   videoSource,
   skipToPrevious,
   skipToNext,
 }: {
   queue: string[];
   queuePosition: number;
+  setQueuePosition: React.Dispatch<React.SetStateAction<number>>;
   videoSource: string;
   skipToPrevious: () => void;
   skipToNext: () => void;
@@ -105,6 +108,7 @@ function MainPanel({
       <Queue
         queue={queue}
         queuePosition={queuePosition}
+        setQueuePosition={setQueuePosition}
       />
     </main>
   );
