@@ -73,7 +73,7 @@ function MainPanel({
       <h1 className="p-10 text-4xl font-bold">Pi Player</h1>
       <video
         ref={videoRef}
-        className="m-auto w-7/12 border-4 border-gray-400"
+        className="m-auto w-7/12 border-4 border-gray-400 fullscreen:border-0"
         src={`${MEDIA_ROOT}${videoSource}`}
         onEnded={skipToNext}
         controls
