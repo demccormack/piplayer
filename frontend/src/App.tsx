@@ -13,7 +13,7 @@ interface MediaItem {
 }
 
 function App() {
-  const [queue, setQueue] = useState(['welcome']);
+  const [queue, setQueue] = useState<string[]>([]);
   const [queuePosition, setQueuePosition] = useState(0);
 
   const videoSource = queue[queuePosition];
@@ -51,7 +51,7 @@ function MainPanel({
   queue,
   queuePosition,
   setQueuePosition,
-  videoSource,
+  videoSource = 'welcome',
   skipToPrevious,
   skipToNext,
 }: {
@@ -88,25 +88,29 @@ function MainPanel({
       >
         Video should play here
       </video>
-      <div className="flex justify-center gap-32 pt-10 text-6xl">
-        <button
-          className="h-12 w-12 overflow-hidden rounded-full"
-          onClick={onPreviousClick}
-        >
-          <div className="-ml-2 -mt-1.5">⏪</div>
-        </button>
-        <button
-          className="h-12 w-12 overflow-hidden rounded-full"
-          onClick={skipToNext}
-        >
-          <div className="-ml-1 -mt-1.5">⏩</div>
-        </button>
-      </div>
-      <Queue
-        queue={queue}
-        queuePosition={queuePosition}
-        setQueuePosition={setQueuePosition}
-      />
+      {queue.length > 0 && (
+        <>
+          <div className="flex justify-center gap-32 pt-10 text-6xl">
+            <button
+              className="h-12 w-12 overflow-hidden rounded-full"
+              onClick={onPreviousClick}
+            >
+              <div className="-ml-2 -mt-1.5">⏪</div>
+            </button>
+            <button
+              className="h-12 w-12 overflow-hidden rounded-full"
+              onClick={skipToNext}
+            >
+              <div className="-ml-1 -mt-1.5">⏩</div>
+            </button>
+          </div>
+          <Queue
+            queue={queue}
+            queuePosition={queuePosition}
+            setQueuePosition={setQueuePosition}
+          />
+        </>
+      )}
     </main>
   );
 }
