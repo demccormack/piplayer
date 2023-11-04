@@ -22,11 +22,8 @@ function App() {
 
   const skipToPrevious = () =>
     setQueuePosition((prev) => {
-      if (prev - 1 >= 0) {
-        return prev - 1;
-      } else {
-        return queue.length - 1;
-      }
+      const mod = queue.length;
+      return (prev - 1 + mod) % mod;
     });
 
   const skipToNext = () =>
