@@ -14,7 +14,10 @@ const queryClient = new QueryClient({
   },
 });
 
-if (process.env.NODE_ENV === 'development') {
+if (
+  process.env.NODE_ENV === 'development' &&
+  import.meta.env.VITE_MSW_IN_BROWSER === 'true'
+) {
   void worker.start();
 }
 
