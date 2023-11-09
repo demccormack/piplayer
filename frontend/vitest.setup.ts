@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest';
-import { server } from './tests/mocks';
+import { server } from './tests/mocks/server';
 
 // Mock Service Worker
 beforeAll(() => server.listen());

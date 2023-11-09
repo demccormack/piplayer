@@ -1,4 +1,3 @@
-import { setupServer } from 'msw/node';
 import { http } from 'msw';
 import top from './top';
 import Films from './Films';
@@ -43,6 +42,4 @@ const handlers = [
   }),
 ];
 
-const server = setupServer(...handlers);
-
-export { handlers, server };
+export { handlers };
