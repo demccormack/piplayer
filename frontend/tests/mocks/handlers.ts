@@ -1,12 +1,12 @@
-import { setupServer } from 'msw/node';
-import { rest } from 'msw';
+import { http } from 'msw';
 import top from './top';
 import Films from './Films';
 import OfficeSpace from './OfficeSpace';
 
 const handlers = [
-  rest.get(import.meta.env.VITE_API_ROOT, (req, res, ctx) => {
-    const dir = req.url.searchParams.get('dir');
+  http.get(import.meta.env.VITE_API_ROOT, ({ request }) => {
+    const url = new URL(request.url);
+    const dir = url.searchParams.get('dir');
 
     const data =
       dir === ''
@@ -18,24 +18,28 @@ const handlers = [
         : undefined;
 
     return data
-      ? res(ctx.status(200), ctx.json(data))
-      : res(
-          ctx.status(500),
-          ctx.set('Content-Type', 'text/html; charset=utf-8'),
-          ctx.body(`
+      ? new Response(JSON.stringify(data), {
+          status: 200,
+        })
+      : new Response(
+          `
 <!doctype html>
 <html lang=en>
 <title>500 Internal Server Error</title>
 <h1>Internal Server Error</h1>
 <p>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</p>
-          `),
+`,
+          {
+            status: 500,
+            headers: { 'Content-Type': 'text/html; charset=utf-8' },
+          },
         );
   }),
-  rest.get(`${import.meta.env.VITE_MEDIA_ROOT}welcome`, (req, res, ctx) => {
-    return res(ctx.status(204));
+  http.get(`${import.meta.env.VITE_MEDIA_ROOT}welcome`, () => {
+    return new Response(null, {
+      status: 204,
+    });
   }),
 ];
 
-const server = setupServer(...handlers);
-
-export { handlers, server };
+export { handlers };
