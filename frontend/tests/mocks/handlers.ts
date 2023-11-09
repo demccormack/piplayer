@@ -19,7 +19,7 @@ const handlers = [
 
     return data
       ? new Response(JSON.stringify(data), {
-          status: 204,
+          status: 200,
         })
       : new Response(
           `
