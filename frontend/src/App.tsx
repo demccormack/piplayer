@@ -1,6 +1,7 @@
-import { Suspense, useState } from 'react';
+import { Suspense, useRef, useState } from 'react';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import Queue from './components/Queue';
 
 const API_ROOT: string = import.meta.env.VITE_API_ROOT;
 const MEDIA_ROOT: string = import.meta.env.VITE_MEDIA_ROOT;
@@ -12,39 +13,113 @@ interface MediaItem {
 }
 
 function App() {
-  const [videoSource, setVideoSource] = useState('welcome');
+  const [queue, setQueue] = useState<string[]>([]);
+  const [queuePosition, setQueuePosition] = useState(0);
+
+  const videoSource = queue[queuePosition];
+
+  const addToQueue = (url: string) => setQueue((prev) => [...prev, url]);
+
+  const skipToPrevious = () =>
+    setQueuePosition((prev) => {
+      const mod = queue.length;
+      return (prev - 1 + mod) % mod;
+    });
+
+  const skipToNext = () =>
+    setQueuePosition((prev) => (prev + 1) % queue.length);
+
   return (
     <div className="h-screen text-gray-400">
-      <MainPanel videoSource={videoSource} />
+      <MainPanel
+        queue={queue}
+        queuePosition={queuePosition}
+        setQueuePosition={setQueuePosition}
+        videoSource={videoSource}
+        skipToPrevious={skipToPrevious}
+        skipToNext={skipToNext}
+      />
       <SideBar
-        setVideoSource={setVideoSource}
+        addToQueue={addToQueue}
         videoSource={videoSource}
       />
     </div>
   );
 }
 
-function MainPanel({ videoSource }: { videoSource: string }) {
+function MainPanel({
+  queue,
+  queuePosition,
+  setQueuePosition,
+  videoSource = 'welcome',
+  skipToPrevious,
+  skipToNext,
+}: {
+  queue: string[];
+  queuePosition: number;
+  setQueuePosition: React.Dispatch<React.SetStateAction<number>>;
+  videoSource: string;
+  skipToPrevious: () => void;
+  skipToNext: () => void;
+}) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const onPreviousClick = () => {
+    if (videoRef.current === null) return;
+    const currentTime = videoRef.current.currentTime;
+
+    if (currentTime < 5) {
+      skipToPrevious();
+    } else {
+      videoRef.current.currentTime = 0;
+    }
+  };
+
   return (
     <main className="fixed right-0 w-3/4 text-center">
       <h1 className="p-10 text-4xl font-bold">Pi Player</h1>
       <video
-        className="m-auto w-7/12 border-4 border-gray-400"
+        ref={videoRef}
+        className="m-auto w-7/12 border-4 border-gray-400 fullscreen:border-0"
         src={`${MEDIA_ROOT}${videoSource}`}
+        onEnded={skipToNext}
         controls
         autoPlay
       >
         Video should play here
       </video>
+      {queue.length > 0 && (
+        <>
+          <div className="flex justify-center gap-32 pt-10 text-6xl">
+            <button
+              className="h-12 w-12 overflow-hidden rounded-full"
+              onClick={onPreviousClick}
+            >
+              <div className="-ml-2 -mt-1.5">⏪</div>
+            </button>
+            <button
+              className="h-12 w-12 overflow-hidden rounded-full"
+              onClick={skipToNext}
+            >
+              <div className="-ml-1 -mt-1.5">⏩</div>
+            </button>
+          </div>
+          <Queue
+            queue={queue}
+            queuePosition={queuePosition}
+            setQueuePosition={setQueuePosition}
+          />
+        </>
+      )}
     </main>
   );
 }
 
 function SideBar({
-  setVideoSource,
+  addToQueue,
   videoSource,
 }: {
-  setVideoSource: React.Dispatch<React.SetStateAction<string>>;
+  addToQueue: (url: string) => void;
   videoSource: string;
 }) {
   return (
@@ -53,7 +128,7 @@ function SideBar({
         <Suspense fallback={<>Loading...</>}>
           <MenuItem
             item={{ name: 'top', type: 'directory', url: '' }}
-            setVideoSource={setVideoSource}
+            addToQueue={addToQueue}
             videoSource={videoSource}
             isTopLevel
           />
@@ -65,12 +140,12 @@ function SideBar({
 
 function MenuItem({
   item,
-  setVideoSource,
+  addToQueue,
   videoSource,
   isTopLevel = false,
 }: {
   item: MediaItem;
-  setVideoSource: React.Dispatch<React.SetStateAction<string>>;
+  addToQueue: (url: string) => void;
   videoSource: string;
   isTopLevel?: boolean;
 }) {
@@ -93,13 +168,13 @@ function MenuItem({
           item={item}
           expanded={expanded}
           setExpanded={setExpanded}
-          setVideoSource={setVideoSource}
+          addToQueue={addToQueue}
           videoSource={videoSource}
         />
       )}
       <MenuItemChildren
         data={data}
-        setVideoSource={setVideoSource}
+        addToQueue={addToQueue}
         videoSource={videoSource}
         isTopLevel={isTopLevel}
         hidden={!expanded}
@@ -110,13 +185,13 @@ function MenuItem({
 
 function MenuItemChildren({
   data,
-  setVideoSource,
+  addToQueue,
   videoSource,
   isTopLevel,
   hidden,
 }: {
   data: MediaItem[];
-  setVideoSource: React.Dispatch<React.SetStateAction<string>>;
+  addToQueue: (url: string) => void;
   videoSource: string;
   isTopLevel?: boolean;
   hidden?: boolean;
@@ -140,7 +215,7 @@ function MenuItemChildren({
           >
             <MenuItem
               item={item}
-              setVideoSource={setVideoSource}
+              addToQueue={addToQueue}
               videoSource={videoSource}
             />
           </Suspense>
@@ -154,13 +229,13 @@ function MenuItemHeader({
   item: { name, type, url },
   expanded,
   setExpanded,
-  setVideoSource,
+  addToQueue,
   videoSource,
 }: {
   item: MediaItem;
   expanded: boolean;
   setExpanded?: React.Dispatch<React.SetStateAction<boolean>>;
-  setVideoSource?: React.Dispatch<React.SetStateAction<string>>;
+  addToQueue?: (url: string) => void;
   videoSource: string;
 }) {
   return type === 'directory' ? (
@@ -186,7 +261,7 @@ function MenuItemHeader({
         role="treeitem"
         name="videoSource"
         value={url}
-        onChange={() => setVideoSource?.(url)}
+        onChange={() => addToQueue?.(url)}
       />
       <span
         className={
