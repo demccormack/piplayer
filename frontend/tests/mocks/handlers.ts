@@ -12,10 +12,10 @@ const handlers = [
       dir === ''
         ? top
         : dir === 'Films'
-        ? Films
-        : dir === 'Films/OfficeSpace'
-        ? OfficeSpace
-        : undefined;
+          ? Films
+          : dir === 'Films/OfficeSpace'
+            ? OfficeSpace
+            : undefined;
 
     return data
       ? new Response(JSON.stringify(data), {
