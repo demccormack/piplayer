@@ -75,6 +75,18 @@ function MainPanel({
     }
   };
 
+  const onEnded = async () => {
+    if (videoRef.current === null) return;
+
+    if (queue.length > 1) {
+      skipToNext();
+    } else {
+      videoRef.current.currentTime = 0;
+    }
+
+    await videoRef.current.play();
+  };
+
   return (
     <main className="fixed right-0 w-3/4 text-center">
       <h1 className="p-10 text-4xl font-bold">Pi Player</h1>
@@ -82,7 +94,7 @@ function MainPanel({
         ref={videoRef}
         className="m-auto w-7/12 border-4 border-gray-400 fullscreen:border-0"
         src={`${MEDIA_ROOT}${videoSource}`}
-        onEnded={skipToNext}
+        onEnded={onEnded}
         controls
         autoPlay
       >
