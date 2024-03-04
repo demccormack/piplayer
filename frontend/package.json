@@ -30,7 +30,7 @@
     "@vitejs/plugin-react-swc": "^3.6.0",
     "autoprefixer": "^10.4.17",
     "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
     "happy-dom": "^13.3.4",
     "msw": "^2.0.4",
     "postcss": "^8.4.31",
