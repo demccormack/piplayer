@@ -20,4 +20,4 @@ pylint==3.1.0
 pytest==8.1.1
 six==1.16.0
 tomlkit==0.12.4
-Werkzeug==3.0.1
+Werkzeug==3.0.2
